@@ -33,5 +33,17 @@ public class PostController {
         return postService.createPost(newPost);
     }
 
+    @GetMapping("/posts/{postId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Post getPostById(@PathVariable String postId) {
+        return postService.getPostById(postId);
+    }
+
+    @GetMapping("/users/{userId}/posts")
+    @ResponseStatus(HttpStatus.OK)
+    public  List<Post> getPostByUserId(@PathVariable String userId) {
+        return postService.findPostByUserId(userId);
+    }
+
 
 }
