@@ -1,0 +1,4 @@
+{"authorId":"id11111","content":"we had a lot of fun in a night in Zurich"}
+{"authorId":"id22222","content":"we had a lot of fun in a night in New York"}
+{"authorId":"id33333","content":"we had a lot of fun in a night in Beijing"}
+{"authorId":"id44444","content":"we had a lot of fun in a night in Tokyo"}
