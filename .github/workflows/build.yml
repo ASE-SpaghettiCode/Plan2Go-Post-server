@@ -33,14 +33,14 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/post_server:latest
 
-    sonarqube:
-      runs-on: ubuntu-latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      steps:
-        - name: test the project and upload test report -> sonarqube
-          run: ./gradlew test jacocoTestReport sonarqube --info
+  sonarqube:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    steps:
+      - name: test the project and upload test report -> sonarqube
+        run: ./gradlew test jacocoTestReport sonarqube --info
 
 
 
