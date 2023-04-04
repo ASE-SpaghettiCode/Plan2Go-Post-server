@@ -1,7 +1,9 @@
 package ASESpaghettiCode.PostServer.Service;
 
 import ASESpaghettiCode.PostServer.Model.Post;
+import ASESpaghettiCode.PostServer.Model.PostLikes;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -74,7 +76,7 @@ public class PostService {
     }
 
 
-    public void userLikesPost(String userId, String noteId) {
+    public PostLikes userLikesPost(String userId, String noteId) {
         Optional<Post> targetNote = postRepository.findById(noteId);
         if (targetNote.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The travel note is not found!");
@@ -83,9 +85,10 @@ public class PostService {
             targetNote.get().addLikedUsers(userId);
             postRepository.save(targetNote.get());
         }
+        return getPostLikes(userId, targetNote);
     }
 
-    public void userUnlikesPost(String userId, String noteId) {
+    public PostLikes userUnlikesPost(String userId, String noteId) {
         Optional<Post> targetNote = postRepository.findById(noteId);
         if (targetNote.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The travel note is not found!");
@@ -95,6 +98,22 @@ public class PostService {
         }
         targetNote.get().removeLikedUsers(userId);
         postRepository.save(targetNote.get());
+        return getPostLikes(userId, targetNote);
+    }
+
+    private PostLikes getPostLikes(String userId, Optional<Post> targetNote) {
+        List<String> likedUsers = targetNote.get().getLikedUsers();
+        boolean whetherLikes = likedUsers.contains(userId);
+        int likeNum = likedUsers.size();
+        return new PostLikes(likeNum, whetherLikes);
+    }
+
+    public PostLikes whetherUserLikesPost(String userId, String noteId) {
+        Optional<Post> targetNote = postRepository.findById(noteId);
+        if (targetNote.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The travel note is not found!");
+        }
+        return getPostLikes(userId, targetNote);
     }
 
 

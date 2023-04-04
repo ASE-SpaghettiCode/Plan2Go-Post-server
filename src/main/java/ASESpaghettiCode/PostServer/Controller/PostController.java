@@ -2,6 +2,7 @@ package ASESpaghettiCode.PostServer.Controller;
 
 
 import ASESpaghettiCode.PostServer.Model.Post;
+import ASESpaghettiCode.PostServer.Model.PostLikes;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
 import ASESpaghettiCode.PostServer.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,15 +71,21 @@ public class PostController {
     }
 
     @PostMapping("users/{userId}/likes/posts/{postId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void userLikesNote(@PathVariable String userId, @PathVariable String postId) {
-        postService.userLikesPost(userId, postId);
+    @ResponseStatus(HttpStatus.OK)
+    public PostLikes userLikesNote(@PathVariable String userId, @PathVariable String postId) {
+        return postService.userLikesPost(userId, postId);
     }
 
     @DeleteMapping("users/{userId}/likes/posts/{postId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void userUnlikesNote(@PathVariable String userId, @PathVariable String postId) {
-        postService.userUnlikesPost(userId, postId);
+    @ResponseStatus(HttpStatus.OK)
+    public PostLikes userUnlikesNote(@PathVariable String userId, @PathVariable String postId) {
+        return postService.userUnlikesPost(userId, postId);
+    }
+
+    @GetMapping("users/{userId}/whetherLikes/posts/{postId}")
+    @ResponseStatus(HttpStatus.OK)
+    public PostLikes whetherUserLikesPost(@PathVariable String userId, @PathVariable String postId) {
+        return postService.whetherUserLikesPost(userId,postId);
     }
 
     @GetMapping("/posts/following/{userId}")
