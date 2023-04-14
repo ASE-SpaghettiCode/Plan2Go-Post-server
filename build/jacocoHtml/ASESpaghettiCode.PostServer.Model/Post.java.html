@@ -3,7 +3,11 @@
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
-<span class="nc bnc" id="L6" title="All 30 branches missed.">@Data</span>
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc bnc" id="L10" title="All 46 branches missed.">@Data</span>
 public class Post {
     @Id
     private String postId;
@@ -12,33 +16,63 @@ public class Post {
 
     private String content;
 
-<span class="nc" id="L15">    public Post(String authorId, String content) {</span>
-<span class="nc" id="L16">        this.authorId = authorId;</span>
-<span class="nc" id="L17">        this.content = content;</span>
-<span class="nc" id="L18">    }</span>
+    private List&lt;String&gt; likedUsers;
+
+    private LocalDateTime createdTime;
+
+<span class="nc" id="L23">    public Post(String authorId, String content) {</span>
+<span class="nc" id="L24">        this.authorId = authorId;</span>
+<span class="nc" id="L25">        this.content = content;</span>
+<span class="nc" id="L26">        this.likedUsers = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L27">        this.createdTime = LocalDateTime.now();</span>
+<span class="nc" id="L28">    }</span>
 
     public String getPostId() {
-<span class="nc" id="L21">        return postId;</span>
+<span class="nc" id="L31">        return postId;</span>
     }
 
     public void setPostId(String postId) {
-<span class="nc" id="L25">        this.postId = postId;</span>
-<span class="nc" id="L26">    }</span>
+<span class="nc" id="L35">        this.postId = postId;</span>
+<span class="nc" id="L36">    }</span>
 
     public String getAuthorId() {
-<span class="nc" id="L29">        return authorId;</span>
+<span class="nc" id="L39">        return authorId;</span>
     }
 
     public void setAuthorId(String authorId) {
-<span class="nc" id="L33">        this.authorId = authorId;</span>
-<span class="nc" id="L34">    }</span>
+<span class="nc" id="L43">        this.authorId = authorId;</span>
+<span class="nc" id="L44">    }</span>
 
     public String getContent() {
-<span class="nc" id="L37">        return content;</span>
+<span class="nc" id="L47">        return content;</span>
     }
 
     public void setContent(String content) {
-<span class="nc" id="L41">        this.content = content;</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L51">        this.content = content;</span>
+<span class="nc" id="L52">    }</span>
+
+    public List&lt;String&gt; getLikedUsers() {
+<span class="nc" id="L55">        return likedUsers;</span>
+    }
+
+    public void setLikedUsers(List&lt;String&gt; likedUsers) {
+<span class="nc" id="L59">        this.likedUsers = likedUsers;</span>
+<span class="nc" id="L60">    }</span>
+
+    public void addLikedUsers(String userId) {
+<span class="nc" id="L63">        this.likedUsers.add(userId);</span>
+<span class="nc" id="L64">    }</span>
+
+    public void removeLikedUsers(String userId) {
+<span class="nc" id="L67">        this.likedUsers.remove(userId);</span>
+<span class="nc" id="L68">    }</span>
+
+    public LocalDateTime getCreatedTime() {
+<span class="nc" id="L71">        return createdTime;</span>
+    }
+
+    public void setCreatedTime(LocalDateTime createdTime) {
+<span class="nc" id="L75">        this.createdTime = createdTime;</span>
+<span class="nc" id="L76">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,13 +1,19 @@
 package ASESpaghettiCode.PostServer.Service;
 
+import ASESpaghettiCode.PostServer.Controller.RestTemplateErrorHandler;
 import ASESpaghettiCode.PostServer.Model.Post;
+import ASESpaghettiCode.PostServer.Model.User;
+import ASESpaghettiCode.PostServer.Model.PostDTO;
 import ASESpaghettiCode.PostServer.Model.PostLikes;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -19,6 +25,14 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+
+    @Value("${UserServerLocation}")
+    private String UserServerLocation;
+
+    @Autowired
+    private RestTemplate restTemplate = new RestTemplateBuilder()
+            .errorHandler(new RestTemplateErrorHandler())
+            .build();
 
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
@@ -41,13 +55,11 @@ public class PostService {
     }
 
     public List<Post> findPostByUserId(String userId) {
-        List<Post> listOfPost = new ArrayList<>();
-        for (Post post : postRepository.findAll()) {
-            if (Objects.equals(post.getAuthorId(), userId)) {
-                listOfPost.add(post);
-            }
+        Optional<List<Post>> sortedListOfPost = Optional.ofNullable(postRepository.findByUserIdInOrderByCreatedDateAsc(userId, Sort.by(Sort.Direction.DESC, "createdTime")));
+        if (sortedListOfPost.isEmpty()) {
+            return new ArrayList<>();
         }
-        return listOfPost;
+        return sortedListOfPost.get();
     }
 
     public void deletePost(String postId, String userId) {
@@ -126,5 +138,27 @@ public class PostService {
 
     }
 
+    public List<PostDTO> addUsernameImagePathtothePostlist(List<Post> postList){
+        List<PostDTO> postDTOS = new ArrayList<>();
+        for (Post post : postList){
+            postDTOS.add(new PostDTO(post));
+        }
+
+        List<String> authorIdList = new ArrayList<>();
+        List<String> authorNameList = new ArrayList<>();
+        List<String> ImagePathList = new ArrayList<>();
+        for (PostDTO postDTO : postDTOS){
+            String authorId = postDTO.getPost().getAuthorId();
+            if(!authorIdList.contains(authorId)){
+                authorIdList.add(authorId);
+                User user = restTemplate.getForObject(UserServerLocation + "/users/" + authorId, User.class);
+                authorNameList.add(user.getUsername());
+                ImagePathList.add(user.getImageLink());
+            }
+            postDTO.setAuthorName(authorNameList.get(authorIdList.indexOf(authorId)));
+            postDTO.setImagePath(ImagePathList.get(authorIdList.indexOf(authorId)));
+        }
+        return postDTOS;
+    };
 
 }

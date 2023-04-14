@@ -2,6 +2,8 @@ package ASESpaghettiCode.PostServer.Controller;
 
 
 import ASESpaghettiCode.PostServer.Model.Post;
+import ASESpaghettiCode.PostServer.Model.User;
+import ASESpaghettiCode.PostServer.Model.PostDTO;
 import ASESpaghettiCode.PostServer.Model.PostLikes;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
 import ASESpaghettiCode.PostServer.Service.PostService;
@@ -90,11 +92,12 @@ public class PostController {
 
     @GetMapping("/posts/following/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Post> findFollowingNotes(@PathVariable String userId) {
+    public List<PostDTO> findFollowingNotes(@PathVariable String userId) {
         // get all the authorId that a user is following
         List<String> followingUserId = restTemplate.getForObject(UserServerLocation + "/users/" + userId + "/followings", List.class);
-        // find all notes with the followingUserId
-        return postService.findPostOfFollowees(followingUserId);
+        // find all posts with the followingUserId
+        List<Post> postList = postService.findPostOfFollowees(followingUserId);
+        return postService.addUsernameImagePathtothePostlist(postList);
     }
 
 }

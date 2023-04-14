@@ -12,4 +12,7 @@ import java.util.List;
 public interface PostRepository extends MongoRepository<Post, String> {
     @Query("{'authorId': {$in: ?0}}")
     List<Post> findByUserIdListInOrderByCreatedDateAsc(List<String> followingUserId, Sort createdTime);
+
+    @Query("{authorId: ?0}")
+    List<Post> findByUserIdInOrderByCreatedDateAsc(String userId, Sort createdTime);
 }
