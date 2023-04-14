@@ -2,6 +2,8 @@
 
 
 import ASESpaghettiCode.PostServer.Model.Post;
+import ASESpaghettiCode.PostServer.Model.User;
+import ASESpaghettiCode.PostServer.Model.PostDTO;
 import ASESpaghettiCode.PostServer.Model.PostLikes;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
 import ASESpaghettiCode.PostServer.Service.PostService;
@@ -21,80 +23,81 @@ public class PostController {
 
     private final PostService postService;
 
-<span class="fc" id="L24">    public PostController(PostService postService) {</span>
-<span class="fc" id="L25">        this.postService = postService;</span>
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L26">    public PostController(PostService postService) {</span>
+<span class="fc" id="L27">        this.postService = postService;</span>
+<span class="fc" id="L28">    }</span>
 
     @Value(&quot;${UserServerLocation}&quot;)
     private String UserServerLocation;
 
-<span class="fc" id="L31">    @Autowired</span>
+<span class="fc" id="L33">    @Autowired</span>
     private RestTemplate restTemplate = new RestTemplateBuilder()
-<span class="fc" id="L33">            .errorHandler(new RestTemplateErrorHandler())</span>
-<span class="fc" id="L34">            .build();</span>
+<span class="fc" id="L35">            .errorHandler(new RestTemplateErrorHandler())</span>
+<span class="fc" id="L36">            .build();</span>
 
 
     @GetMapping(&quot;/posts&quot;)
     @ResponseStatus(HttpStatus.OK)
     public List&lt;Post&gt; findAllPost(){
-<span class="nc" id="L40">            return postService.findAllPost();</span>
+<span class="nc" id="L42">            return postService.findAllPost();</span>
     }
 
     @PostMapping(&quot;/posts&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public Post createNote(@RequestBody Post newPost) {
-<span class="nc" id="L46">        return postService.createPost(newPost);</span>
+<span class="nc" id="L48">        return postService.createPost(newPost);</span>
     }
 
     @GetMapping(&quot;/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public Post getPostById(@PathVariable String postId) {
-<span class="nc" id="L52">        return postService.getPostById(postId);</span>
+<span class="nc" id="L54">        return postService.getPostById(postId);</span>
     }
 
     @GetMapping(&quot;/users/{userId}/posts&quot;)
     @ResponseStatus(HttpStatus.OK)
     public  List&lt;Post&gt; getPostByUserId(@PathVariable String userId) {
-<span class="nc" id="L58">        return postService.findPostByUserId(userId);</span>
+<span class="nc" id="L60">        return postService.findPostByUserId(userId);</span>
     }
 
     @DeleteMapping(&quot;/users/{userId}/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNote(@PathVariable String postId, @PathVariable String userId) {
-<span class="nc" id="L64">        postService.deletePost(postId, userId);</span>
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L66">        postService.deletePost(postId, userId);</span>
+<span class="nc" id="L67">    }</span>
 
     @PutMapping(&quot;users/{userId}/editing/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public void updateNote(@PathVariable String postId, @PathVariable String userId, @RequestBody Post post) {
-<span class="nc" id="L70">        postService.updatePost(postId, userId, post);</span>
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L72">        postService.updatePost(postId, userId, post);</span>
+<span class="nc" id="L73">    }</span>
 
     @PostMapping(&quot;users/{userId}/likes/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public PostLikes userLikesNote(@PathVariable String userId, @PathVariable String postId) {
-<span class="nc" id="L76">        return postService.userLikesPost(userId, postId);</span>
+<span class="nc" id="L78">        return postService.userLikesPost(userId, postId);</span>
     }
 
     @DeleteMapping(&quot;users/{userId}/likes/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public PostLikes userUnlikesNote(@PathVariable String userId, @PathVariable String postId) {
-<span class="nc" id="L82">        return postService.userUnlikesPost(userId, postId);</span>
+<span class="nc" id="L84">        return postService.userUnlikesPost(userId, postId);</span>
     }
 
     @GetMapping(&quot;users/{userId}/whetherLikes/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public PostLikes whetherUserLikesPost(@PathVariable String userId, @PathVariable String postId) {
-<span class="nc" id="L88">        return postService.whetherUserLikesPost(userId,postId);</span>
+<span class="nc" id="L90">        return postService.whetherUserLikesPost(userId,postId);</span>
     }
 
     @GetMapping(&quot;/posts/following/{userId}&quot;)
     @ResponseStatus(HttpStatus.OK)
-    public List&lt;Post&gt; findFollowingNotes(@PathVariable String userId) {
+    public List&lt;PostDTO&gt; findFollowingNotes(@PathVariable String userId) {
         // get all the authorId that a user is following
-<span class="nc" id="L95">        List&lt;String&gt; followingUserId = restTemplate.getForObject(UserServerLocation + &quot;/users/&quot; + userId + &quot;/followings&quot;, List.class);</span>
-        // find all notes with the followingUserId
-<span class="nc" id="L97">        return postService.findPostOfFollowees(followingUserId);</span>
+<span class="nc" id="L97">        List&lt;String&gt; followingUserId = restTemplate.getForObject(UserServerLocation + &quot;/users/&quot; + userId + &quot;/followings&quot;, List.class);</span>
+        // find all posts with the followingUserId
+<span class="nc" id="L99">        List&lt;Post&gt; postList = postService.findPostOfFollowees(followingUserId);</span>
+<span class="nc" id="L100">        return postService.addUsernameImagePathtothePostlist(postList);</span>
     }
 
 }
