@@ -10,13 +10,19 @@ import java.util.List;
 
 @Data
 public class User{
-
+    @JsonProperty("userId")
     public String userId;
+    @JsonProperty("username")
     public String username;
+    @JsonProperty("password")
     public String password;
+    @JsonProperty("token")
     public String token;
+    @JsonProperty("intro")
     public String intro;
+    @JsonProperty("imageLink")
     public String imageLink;
+
     public List<String> followers;
     public List<String> followings;
 

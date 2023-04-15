@@ -10,21 +10,27 @@ import java.util.List;
 
 <span class="nc bnc" id="L11" title="All 70 branches missed.">@Data</span>
 public class User{
-
+    @JsonProperty(&quot;userId&quot;)
     public String userId;
+    @JsonProperty(&quot;username&quot;)
     public String username;
+    @JsonProperty(&quot;password&quot;)
     public String password;
+    @JsonProperty(&quot;token&quot;)
     public String token;
+    @JsonProperty(&quot;intro&quot;)
     public String intro;
+    @JsonProperty(&quot;imageLink&quot;)
     public String imageLink;
+
     public List&lt;String&gt; followers;
     public List&lt;String&gt; followings;
 
-<span class="nc" id="L23">    public User(String username, String password, String token){</span>
-<span class="nc" id="L24">        this.password=password;</span>
-<span class="nc" id="L25">        this.username=username;</span>
-<span class="nc" id="L26">        this.token=token;</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L29">    public User(String username, String password, String token){</span>
+<span class="nc" id="L30">        this.password=password;</span>
+<span class="nc" id="L31">        this.username=username;</span>
+<span class="nc" id="L32">        this.token=token;</span>
+<span class="nc" id="L33">    }</span>
 
     @JsonCreator
     public static User create(@JsonProperty(&quot;userId&quot;) String userId,
@@ -33,96 +39,96 @@ public class User{
                               @JsonProperty(&quot;token&quot;) String token,
                               @JsonProperty(&quot;intro&quot;) String intro,
                               @JsonProperty(&quot;imageLink&quot;) String imageLink){
-<span class="nc" id="L36">        User user = new User(username,password,token);</span>
-<span class="nc" id="L37">        user.setUserId(userId);</span>
-<span class="nc" id="L38">        user.setIntro(intro);</span>
-<span class="nc" id="L39">        user.setImageLink(imageLink);</span>
-<span class="nc" id="L40">        return user;</span>
+<span class="nc" id="L42">        User user = new User(username,password,token);</span>
+<span class="nc" id="L43">        user.setUserId(userId);</span>
+<span class="nc" id="L44">        user.setIntro(intro);</span>
+<span class="nc" id="L45">        user.setImageLink(imageLink);</span>
+<span class="nc" id="L46">        return user;</span>
     }
 
     public String getUserId() {
-<span class="nc" id="L44">        return userId;</span>
+<span class="nc" id="L50">        return userId;</span>
     }
 
     public String getPassword() {
-<span class="nc" id="L48">        return password;</span>
+<span class="nc" id="L54">        return password;</span>
     }
 
     public String getUsername(){
-<span class="nc" id="L52">        return username;</span>
+<span class="nc" id="L58">        return username;</span>
     }
 
     public void setUserId(String userId) {
-<span class="nc" id="L56">        this.userId = userId;</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L62">        this.userId = userId;</span>
+<span class="nc" id="L63">    }</span>
 
     public void setPassword(String password) {
-<span class="nc" id="L60">        this.password = password;</span>
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L66">        this.password = password;</span>
+<span class="nc" id="L67">    }</span>
 
     public void setUsername(String username) {
-<span class="nc" id="L64">        this.username = username;</span>
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L70">        this.username = username;</span>
+<span class="nc" id="L71">    }</span>
 
     public String getToken() {
-<span class="nc" id="L68">        return token;</span>
+<span class="nc" id="L74">        return token;</span>
     }
 
     public void setToken(String token) {
-<span class="nc" id="L72">        this.token = token;</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L78">        this.token = token;</span>
+<span class="nc" id="L79">    }</span>
 
     public String getIntro(){
-<span class="nc" id="L76">        return intro;</span>
+<span class="nc" id="L82">        return intro;</span>
     }
 
     public void setIntro(String intro) {
-<span class="nc" id="L80">        this.intro = intro;</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L86">        this.intro = intro;</span>
+<span class="nc" id="L87">    }</span>
 
     public void setImageLink(String imageLink) {
-<span class="nc" id="L84">        this.imageLink = imageLink;</span>
-<span class="nc" id="L85">    }</span>
+<span class="nc" id="L90">        this.imageLink = imageLink;</span>
+<span class="nc" id="L91">    }</span>
 
     public String getImageLink() {
-<span class="nc" id="L88">        return imageLink;</span>
+<span class="nc" id="L94">        return imageLink;</span>
     }
 
     public List&lt;String&gt; getFollowers() {
-<span class="nc" id="L92">        return this.followers;</span>
+<span class="nc" id="L98">        return this.followers;</span>
     }
 
     public void setFollowers(List&lt;String&gt; initialList) {
-<span class="nc" id="L96">        this.followers = initialList;</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L102">        this.followers = initialList;</span>
+<span class="nc" id="L103">    }</span>
 
     public void addFollowers(String userId) {
-<span class="nc" id="L100">        this.followers.add(userId);</span>
-<span class="nc" id="L101">    }</span>
+<span class="nc" id="L106">        this.followers.add(userId);</span>
+<span class="nc" id="L107">    }</span>
 
     public void removeFollowers(String userId) {
-<span class="nc" id="L104">        this.followers.remove(userId);</span>
-<span class="nc" id="L105">    }</span>
+<span class="nc" id="L110">        this.followers.remove(userId);</span>
+<span class="nc" id="L111">    }</span>
 
     public List&lt;String&gt; getFollowings() {
-<span class="nc" id="L108">        return this.followings;</span>
+<span class="nc" id="L114">        return this.followings;</span>
     }
 
     public void setFollowings(List&lt;String&gt; initialList) {
-<span class="nc" id="L112">        this.followings = initialList;</span>
-<span class="nc" id="L113">    }</span>
+<span class="nc" id="L118">        this.followings = initialList;</span>
+<span class="nc" id="L119">    }</span>
 
     public void addFollowings(String userId) {
-<span class="nc" id="L116">        this.followings.add(userId);</span>
-<span class="nc" id="L117">    }</span>
+<span class="nc" id="L122">        this.followings.add(userId);</span>
+<span class="nc" id="L123">    }</span>
 
     public void removeFollowings(String userId) {
-<span class="nc" id="L120">        this.followings.remove(userId);</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L126">        this.followings.remove(userId);</span>
+<span class="nc" id="L127">    }</span>
 
     @Override
     public String toString() {
-<span class="nc" id="L125">        return &quot;User{&quot; +</span>
+<span class="nc" id="L131">        return &quot;User{&quot; +</span>
                 &quot;id='&quot; + userId + '\'' +
                 &quot;, username='&quot; + username + '\'' +
                 &quot;, password=&quot; + password+'\''+

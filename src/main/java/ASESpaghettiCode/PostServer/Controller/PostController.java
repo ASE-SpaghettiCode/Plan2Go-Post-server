@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -95,10 +98,13 @@ public class PostController {
     @ResponseStatus(HttpStatus.OK)
     public List<PostDTO> findFollowingNotes(@PathVariable String userId) {
         // get all the authorId that a user is following
-        List<User> followingUser = restTemplate.getForObject(UserServerLocation + "/users/" + userId + "/followings", List.class);
+        ParameterizedTypeReference<List<User>> responseType = new ParameterizedTypeReference<List<User>>() {};
+        ResponseEntity<List<User>> response = restTemplate.exchange(UserServerLocation + "/users/" + userId + "/followings", HttpMethod.GET, null, responseType);
+        List<User> followingUsers = response.getBody();
+
         // retrive all authorId(followingUserId) from users
         List<String> followingUserId = new ArrayList<>();
-        for (User user: followingUser){
+        for (User user: followingUsers){
             String authorId = user.getUserId();
             if (!followingUserId.contains(authorId)){
                 followingUserId.add(authorId);
