@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -94,7 +95,15 @@ public class PostController {
     @ResponseStatus(HttpStatus.OK)
     public List<PostDTO> findFollowingNotes(@PathVariable String userId) {
         // get all the authorId that a user is following
-        List<String> followingUserId = restTemplate.getForObject(UserServerLocation + "/users/" + userId + "/followings", List.class);
+        List<User> followingUser = restTemplate.getForObject(UserServerLocation + "/users/" + userId + "/followings", List.class);
+        // retrive all authorId(followingUserId) from users
+        List<String> followingUserId = new ArrayList<>();
+        for (User user: followingUser){
+            String authorId = user.getUserId();
+            if (!followingUserId.contains(authorId)){
+                followingUserId.add(authorId);
+            }
+        }
         // find all posts with the followingUserId
         List<Post> postList = postService.findPostOfFollowees(followingUserId);
         return postService.addUsernameImagePathtothePostlist(postList);

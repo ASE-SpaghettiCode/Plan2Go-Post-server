@@ -143,23 +143,22 @@ public class PostService {
 <span class="nc bnc" id="L143" title="All 2 branches missed.">        for (Post post : postList){</span>
 <span class="nc" id="L144">            postDTOS.add(new PostDTO(post));</span>
 <span class="nc" id="L145">        }</span>
-
-<span class="nc" id="L147">        List&lt;String&gt; authorIdList = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L148">        List&lt;String&gt; authorNameList = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L149">        List&lt;String&gt; ImagePathList = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L150" title="All 2 branches missed.">        for (PostDTO postDTO : postDTOS){</span>
-<span class="nc" id="L151">            String authorId = postDTO.getPost().getAuthorId();</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">            if(!authorIdList.contains(authorId)){</span>
-<span class="nc" id="L153">                authorIdList.add(authorId);</span>
-<span class="nc" id="L154">                User user = restTemplate.getForObject(UserServerLocation + &quot;/users/&quot; + authorId, User.class);</span>
-<span class="nc" id="L155">                authorNameList.add(user.getUsername());</span>
-<span class="nc" id="L156">                ImagePathList.add(user.getImageLink());</span>
+<span class="nc" id="L146">        List&lt;String&gt; authorIdList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L147">        List&lt;String&gt; authorNameList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L148">        List&lt;String&gt; ImagePathList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        for (PostDTO postDTO : postDTOS){</span>
+<span class="nc" id="L150">            String authorId = postDTO.getPost().getAuthorId();</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            if(!authorIdList.contains(authorId)){</span>
+<span class="nc" id="L152">                authorIdList.add(authorId);</span>
+<span class="nc" id="L153">                User user = restTemplate.getForObject(UserServerLocation + &quot;/users/&quot; + authorId, User.class);</span>
+<span class="nc" id="L154">                authorNameList.add(user.getUsername());</span>
+<span class="nc" id="L155">                ImagePathList.add(user.getImageLink());</span>
             }
-<span class="nc" id="L158">            postDTO.setAuthorName(authorNameList.get(authorIdList.indexOf(authorId)));</span>
-<span class="nc" id="L159">            postDTO.setImagePath(ImagePathList.get(authorIdList.indexOf(authorId)));</span>
-<span class="nc" id="L160">        }</span>
-<span class="nc" id="L161">        return postDTOS;</span>
-    };
+<span class="nc" id="L157">            postDTO.setAuthorName(authorNameList.get(authorIdList.indexOf(authorId)));</span>
+<span class="nc" id="L158">            postDTO.setImagePath(ImagePathList.get(authorIdList.indexOf(authorId)));</span>
+<span class="nc" id="L159">        }</span>
+<span class="nc" id="L160">        return postDTOS;</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

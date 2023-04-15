@@ -143,7 +143,6 @@ public class PostService {
         for (Post post : postList){
             postDTOS.add(new PostDTO(post));
         }
-
         List<String> authorIdList = new ArrayList<>();
         List<String> authorNameList = new ArrayList<>();
         List<String> ImagePathList = new ArrayList<>();
@@ -159,6 +158,6 @@ public class PostService {
             postDTO.setImagePath(ImagePathList.get(authorIdList.indexOf(authorId)));
         }
         return postDTOS;
-    };
+    }
 
 }
