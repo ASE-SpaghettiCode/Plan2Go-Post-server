@@ -1,10 +1,8 @@
 package ASESpaghettiCode.PostServer.Service;
 
+import ASESpaghettiCode.PostServer.Controller.CommentController;
 import ASESpaghettiCode.PostServer.Controller.RestTemplateErrorHandler;
-import ASESpaghettiCode.PostServer.Model.Post;
-import ASESpaghettiCode.PostServer.Model.User;
-import ASESpaghettiCode.PostServer.Model.PostDTO;
-import ASESpaghettiCode.PostServer.Model.PostLikes;
+import ASESpaghettiCode.PostServer.Model.*;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +41,8 @@ public class PostService {
     }
 
     public Post createPost(Post newPost) {
+        List<Comment> initialComments = new ArrayList<>();
+        newPost.setComments(initialComments);
         return postRepository.save(newPost);
     }
 
