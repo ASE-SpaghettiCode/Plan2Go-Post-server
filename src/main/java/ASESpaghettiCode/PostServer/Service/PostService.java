@@ -89,32 +89,32 @@ public class PostService {
 
 
     public PostLikes userLikesPost(String userId, String noteId) {
-        Optional<Post> targetNote = postRepository.findById(noteId);
-        if (targetNote.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The travel note is not found!");
+        Optional<Post> targetPost = postRepository.findById(noteId);
+        if (targetPost.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The post is not found!");
         }
-        if(!targetNote.get().getLikedUsers().contains(userId)) {
-            targetNote.get().addLikedUsers(userId);
-            postRepository.save(targetNote.get());
+        if(!targetPost.get().getLikedUsers().contains(userId)) {
+            targetPost.get().addLikedUsers(userId);
+            postRepository.save(targetPost.get());
         }
-        return getPostLikes(userId, targetNote);
+        return getPostLikes(userId, targetPost);
     }
 
     public PostLikes userUnlikesPost(String userId, String noteId) {
-        Optional<Post> targetNote = postRepository.findById(noteId);
-        if (targetNote.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The travel note is not found!");
+        Optional<Post> targetPost = postRepository.findById(noteId);
+        if (targetPost.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The post is not found!");
         }
-        if (!targetNote.get().getLikedUsers().contains(userId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user didn't like this travel note");
+        if (!targetPost.get().getLikedUsers().contains(userId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user didn't like this post");
         }
-        targetNote.get().removeLikedUsers(userId);
-        postRepository.save(targetNote.get());
-        return getPostLikes(userId, targetNote);
+        targetPost.get().removeLikedUsers(userId);
+        postRepository.save(targetPost.get());
+        return getPostLikes(userId, targetPost);
     }
 
-    private PostLikes getPostLikes(String userId, Optional<Post> targetNote) {
-        List<String> likedUsers = targetNote.get().getLikedUsers();
+    private PostLikes getPostLikes(String userId, Optional<Post> targetPost) {
+        List<String> likedUsers = targetPost.get().getLikedUsers();
         boolean whetherLikes = likedUsers.contains(userId);
         int likeNum = likedUsers.size();
         return new PostLikes(likeNum, whetherLikes);
