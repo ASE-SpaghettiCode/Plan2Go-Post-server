@@ -69,7 +69,7 @@ public class CommentService {
         } else {
             Optional<Post> targetPost = postRepository.findById(targetComment.get().getTargetPostId());
             if (targetPost.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Note is not found!");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post is not found!");
             } else {
                 targetPost.get().deleteComments(targetComment.get());
                 postRepository.save(targetPost.get());
