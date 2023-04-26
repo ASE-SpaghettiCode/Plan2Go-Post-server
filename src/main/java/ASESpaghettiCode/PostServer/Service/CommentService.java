@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,7 +44,12 @@ public class CommentService {
         if (targetPost.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post is not found!");
         }
-        return targetPost.get().getComments();
+        List<String> commentIdList = targetPost.get().getComments();
+        return commentIdList.stream()
+                .map(commentRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 
     public Comment createComment(String targetPostId, CommentPostDTO commentPostDTO) {
@@ -55,7 +61,7 @@ public class CommentService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The post is not found!");
         }
         commentRepository.save(newComment);
-        targetNote.get().addComments(newComment);
+        targetNote.get().addComments(newComment.getCommentId());
         postRepository.save(targetNote.get());
         return commentRepository.save(newComment);
     }
@@ -71,7 +77,7 @@ public class CommentService {
             if (targetPost.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post is not found!");
             } else {
-                targetPost.get().deleteComments(targetComment.get());
+                targetPost.get().deleteComments(targetComment.get().getCommentId());
                 postRepository.save(targetPost.get());
             }
             commentRepository.delete(targetComment.get());

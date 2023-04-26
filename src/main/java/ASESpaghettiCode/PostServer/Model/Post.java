@@ -20,7 +20,7 @@ public class Post {
 
     private LocalDateTime createdTime;
 
-    private List<Comment> comments;
+    private List<String> comments;
 
     public Post(String authorId, String content) {
         this.authorId = authorId;
@@ -77,19 +77,19 @@ public class Post {
         this.createdTime = createdTime;
     }
 
-    public List<Comment> getComments() {
+    public List<String> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<String> comments) {
         this.comments = comments;
     }
 
-    public void addComments(Comment comment) {
-        this.comments.add(comment);
+    public void addComments(String commentId) {
+        this.comments.add(commentId);
     }
 
-    public void deleteComments(Comment comment) {
-        this.comments.remove(comment);
+    public void deleteComments(String commentId) {
+        this.comments.remove(commentId);
     }
 }

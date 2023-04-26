@@ -25,7 +25,7 @@ public class CommentServiceTest {
 
     @Test
     void findCommentsByPostIdTest_Success() {
-        post.setComments(List.of(comment));
+        post.setComments(List.of(comment.getCommentId()));
         when(postRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(post));
 
         assertEquals(List.of(comment), commentService.findCommentsByPostId("1"));
@@ -40,9 +40,9 @@ public class CommentServiceTest {
 
     @Test
     void deleteCommentTest_Success() {
-        List<Comment> initialComments = new ArrayList<>();
+        List<String> initialComments = new ArrayList<>();
         post.setComments(initialComments);
-        post.addComments(comment);
+        post.addComments(comment.getCommentId());
         when(commentRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(comment));
         when(postRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(post));
 

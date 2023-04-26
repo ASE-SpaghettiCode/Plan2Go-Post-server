@@ -41,7 +41,7 @@ public class PostService {
     }
 
     public Post createPost(Post newPost) {
-        List<Comment> initialComments = new ArrayList<>();
+        List<String> initialComments = new ArrayList<>();
         newPost.setComments(initialComments);
         return postRepository.save(newPost);
     }
