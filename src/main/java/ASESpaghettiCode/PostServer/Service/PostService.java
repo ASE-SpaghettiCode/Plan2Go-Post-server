@@ -27,6 +27,9 @@ public class PostService {
     @Value("${UserServerLocation}")
     private String UserServerLocation;
 
+    @Value("http://localhost:8082")
+    private String TravelNoteServerLocation;
+
     @Autowired
     private RestTemplate restTemplate = new RestTemplateBuilder()
             .errorHandler(new RestTemplateErrorHandler())
@@ -43,6 +46,10 @@ public class PostService {
     public Post createPost(Post newPost) {
         List<Comment> initialComments = new ArrayList<>();
         newPost.setComments(initialComments);
+        if (newPost.getSharedNoteId()!=null){
+            Note note = restTemplate.getForObject(TravelNoteServerLocation + "/notes/" + newPost.getSharedNoteId(), Note.class);
+            newPost.setSharedNoteCoverImage(note.getCoverImage());
+        }
         return postRepository.save(newPost);
     }
 
@@ -88,16 +95,28 @@ public class PostService {
     }
 
 
-    public PostLikes userLikesPost(String userId, String noteId) {
-        Optional<Post> targetNote = postRepository.findById(noteId);
-        if (targetNote.isEmpty()) {
+    public PostLikes userLikesPost(String userId, String postId) {
+        Optional<Post> targetPost = postRepository.findById(postId);
+        if (targetPost.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The travel note is not found!");
         }
-        if(!targetNote.get().getLikedUsers().contains(userId)) {
-            targetNote.get().addLikedUsers(userId);
-            postRepository.save(targetNote.get());
+        if(!targetPost.get().getLikedUsers().contains(userId)) {
+            targetPost.get().addLikedUsers(userId);
+            postRepository.save(targetPost.get());
         }
-        return getPostLikes(userId, targetNote);
+        String ownerId = targetPost.get().getAuthorId();
+        restTemplate.postForLocation(UserServerLocation+"/notifications",createLikesNotification(userId, postId, ownerId));
+        return getPostLikes(userId, targetPost);
+    }
+
+    public Notification createLikesNotification(String userId, String noteId,String ownerId){
+        Notification notification = new Notification();
+        notification.setActorId(userId);
+        notification.setMethod("like");
+        notification.setOwnerId(ownerId);
+        notification.setTargetType("note");
+        notification.setTargetId(noteId);
+        return notification;
     }
 
     public PostLikes userUnlikesPost(String userId, String noteId) {

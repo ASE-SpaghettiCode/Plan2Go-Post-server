@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">ASESpaghettiCode.PostServer.Service</a> &gt; <span class="el_source">PostService.java</span></div><h1>PostService.java</h1><pre class="source lang-java linenums">package ASESpaghettiCode.PostServer.Service;
 
+import ASESpaghettiCode.PostServer.Controller.CommentController;
 import ASESpaghettiCode.PostServer.Controller.RestTemplateErrorHandler;
-import ASESpaghettiCode.PostServer.Model.Post;
-import ASESpaghettiCode.PostServer.Model.User;
-import ASESpaghettiCode.PostServer.Model.PostDTO;
-import ASESpaghettiCode.PostServer.Model.PostLikes;
+import ASESpaghettiCode.PostServer.Model.*;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,135 +27,158 @@ public class PostService {
     @Value(&quot;${UserServerLocation}&quot;)
     private String UserServerLocation;
 
-<span class="fc" id="L32">    @Autowired</span>
-    private RestTemplate restTemplate = new RestTemplateBuilder()
-<span class="fc" id="L34">            .errorHandler(new RestTemplateErrorHandler())</span>
-<span class="fc" id="L35">            .build();</span>
+    @Value(&quot;http://localhost:8082&quot;)
+    private String TravelNoteServerLocation;
 
-<span class="fc" id="L37">    public PostService(PostRepository postRepository) {</span>
-<span class="fc" id="L38">        this.postRepository = postRepository;</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L33">    @Autowired</span>
+    private RestTemplate restTemplate = new RestTemplateBuilder()
+<span class="fc" id="L35">            .errorHandler(new RestTemplateErrorHandler())</span>
+<span class="fc" id="L36">            .build();</span>
+
+<span class="fc" id="L38">    public PostService(PostRepository postRepository) {</span>
+<span class="fc" id="L39">        this.postRepository = postRepository;</span>
+<span class="fc" id="L40">    }</span>
 
     public List&lt;Post&gt; findAllPost() {
-<span class="nc" id="L42">        return this.postRepository.findAll();</span>
+<span class="nc" id="L43">        return this.postRepository.findAll();</span>
     }
 
     public Post createPost(Post newPost) {
-<span class="nc" id="L46">        return postRepository.save(newPost);</span>
+<span class="nc" id="L47">        List&lt;Comment&gt; initialComments = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L48">        newPost.setComments(initialComments);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (newPost.getSharedNoteId()!=null){</span>
+<span class="nc" id="L50">            Note note = restTemplate.getForObject(TravelNoteServerLocation + &quot;/notes/&quot; + newPost.getSharedNoteId(), Note.class);</span>
+<span class="nc" id="L51">            newPost.setSharedNoteCoverImage(note.getCoverImage());</span>
+        }
+<span class="nc" id="L53">        return postRepository.save(newPost);</span>
     }
 
     public Post getPostById(String postId) {
-<span class="nc" id="L50">        Optional&lt;Post&gt; targetPost = postRepository.findById(postId);</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
-<span class="nc" id="L52">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Post is not found!&quot;);</span>
+<span class="nc" id="L57">        Optional&lt;Post&gt; targetPost = postRepository.findById(postId);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
+<span class="nc" id="L59">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Post is not found!&quot;);</span>
         }
-<span class="nc" id="L54">        return targetPost.get();</span>
+<span class="nc" id="L61">        return targetPost.get();</span>
     }
 
     public List&lt;Post&gt; findPostByUserId(String userId) {
-<span class="nc" id="L58">        Optional&lt;List&lt;Post&gt;&gt; sortedListOfPost = Optional.ofNullable(postRepository.findByUserIdInOrderByCreatedDateAsc(userId, Sort.by(Sort.Direction.DESC, &quot;createdTime&quot;)));</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (sortedListOfPost.isEmpty()) {</span>
-<span class="nc" id="L60">            return new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L65">        Optional&lt;List&lt;Post&gt;&gt; sortedListOfPost = Optional.ofNullable(postRepository.findByUserIdInOrderByCreatedDateAsc(userId, Sort.by(Sort.Direction.DESC, &quot;createdTime&quot;)));</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (sortedListOfPost.isEmpty()) {</span>
+<span class="nc" id="L67">            return new ArrayList&lt;&gt;();</span>
         }
-<span class="nc" id="L62">        return sortedListOfPost.get();</span>
+<span class="nc" id="L69">        return sortedListOfPost.get();</span>
     }
 
     public void deletePost(String postId, String userId) {
-<span class="nc" id="L66">        Optional&lt;Post&gt; targetPost = postRepository.findById(postId);</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
-<span class="nc" id="L68">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Post is not found!&quot;);</span>
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        } else if (!Objects.equals(userId, targetPost.get().getAuthorId())) {</span>
-<span class="nc" id="L70">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;You cannot delete this Post!&quot;);</span>
+<span class="nc" id="L73">        Optional&lt;Post&gt; targetPost = postRepository.findById(postId);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
+<span class="nc" id="L75">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Post is not found!&quot;);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        } else if (!Objects.equals(userId, targetPost.get().getAuthorId())) {</span>
+<span class="nc" id="L77">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;You cannot delete this Post!&quot;);</span>
         }
         else {
-<span class="nc" id="L73">            postRepository.delete(postRepository.findById(postId).get());</span>
+<span class="nc" id="L80">            postRepository.delete(postRepository.findById(postId).get());</span>
         }
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L82">    }</span>
 
     public void updatePost(String postId, String userId, Post post) {
-<span class="nc" id="L78">        Optional&lt;Post&gt; targetPost = postRepository.findById(postId);</span>
-<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
-<span class="nc" id="L80">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Post is not found!&quot;);</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        } else if (!Objects.equals(userId, targetPost.get().getAuthorId())) {</span>
-<span class="nc" id="L82">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;You cannot edit this Post!&quot;);</span>
+<span class="nc" id="L85">        Optional&lt;Post&gt; targetPost = postRepository.findById(postId);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
+<span class="nc" id="L87">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Post is not found!&quot;);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        } else if (!Objects.equals(userId, targetPost.get().getAuthorId())) {</span>
+<span class="nc" id="L89">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;You cannot edit this Post!&quot;);</span>
         }
         else {
-<span class="nc" id="L85">            targetPost.get().setContent(post.getContent());</span>
-<span class="nc" id="L86">            postRepository.save(targetPost.get());</span>
+<span class="nc" id="L92">            targetPost.get().setContent(post.getContent());</span>
+<span class="nc" id="L93">            postRepository.save(targetPost.get());</span>
         }
-<span class="nc" id="L88">    }</span>
+<span class="nc" id="L95">    }</span>
 
 
-    public PostLikes userLikesPost(String userId, String noteId) {
-<span class="nc" id="L92">        Optional&lt;Post&gt; targetNote = postRepository.findById(noteId);</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (targetNote.isEmpty()) {</span>
-<span class="nc" id="L94">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The travel note is not found!&quot;);</span>
+    public PostLikes userLikesPost(String userId, String postId) {
+<span class="nc" id="L99">        Optional&lt;Post&gt; targetPost = postRepository.findById(postId);</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
+<span class="nc" id="L101">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The travel note is not found!&quot;);</span>
         }
-<span class="nc bnc" id="L96" title="All 2 branches missed.">        if(!targetNote.get().getLikedUsers().contains(userId)) {</span>
-<span class="nc" id="L97">            targetNote.get().addLikedUsers(userId);</span>
-<span class="nc" id="L98">            postRepository.save(targetNote.get());</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if(!targetPost.get().getLikedUsers().contains(userId)) {</span>
+<span class="nc" id="L104">            targetPost.get().addLikedUsers(userId);</span>
+<span class="nc" id="L105">            postRepository.save(targetPost.get());</span>
         }
-<span class="nc" id="L100">        return getPostLikes(userId, targetNote);</span>
+<span class="nc" id="L107">        String ownerId = targetPost.get().getAuthorId();</span>
+<span class="nc" id="L108">        restTemplate.postForLocation(UserServerLocation+&quot;/notifications&quot;,createLikesNotification(userId, postId, ownerId));</span>
+<span class="nc" id="L109">        return getPostLikes(userId, targetPost);</span>
+    }
+
+
+
+    public Notification createLikesNotification(String userId, String noteId,String ownerId){
+<span class="nc" id="L115">        Notification notification = new Notification();</span>
+<span class="nc" id="L116">        notification.setActorId(userId);</span>
+<span class="nc" id="L117">        notification.setMethod(&quot;like&quot;);</span>
+<span class="nc" id="L118">        notification.setOwnerId(ownerId);</span>
+<span class="nc" id="L119">        notification.setTargetType(&quot;note&quot;);</span>
+<span class="nc" id="L120">        notification.setTargetId(noteId);</span>
+<span class="nc" id="L121">        return notification;</span>
     }
 
     public PostLikes userUnlikesPost(String userId, String noteId) {
-<span class="nc" id="L104">        Optional&lt;Post&gt; targetNote = postRepository.findById(noteId);</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (targetNote.isEmpty()) {</span>
-<span class="nc" id="L106">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The travel note is not found!&quot;);</span>
+<span class="nc" id="L125">        Optional&lt;Post&gt; targetNote = postRepository.findById(noteId);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (targetNote.isEmpty()) {</span>
+<span class="nc" id="L127">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The travel note is not found!&quot;);</span>
         }
-<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (!targetNote.get().getLikedUsers().contains(userId)) {</span>
-<span class="nc" id="L109">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The user didn't like this travel note&quot;);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (!targetNote.get().getLikedUsers().contains(userId)) {</span>
+<span class="nc" id="L130">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The user didn't like this travel note&quot;);</span>
         }
-<span class="nc" id="L111">        targetNote.get().removeLikedUsers(userId);</span>
-<span class="nc" id="L112">        postRepository.save(targetNote.get());</span>
-<span class="nc" id="L113">        return getPostLikes(userId, targetNote);</span>
+<span class="nc" id="L132">        targetNote.get().removeLikedUsers(userId);</span>
+<span class="nc" id="L133">        postRepository.save(targetNote.get());</span>
+<span class="nc" id="L134">        return getPostLikes(userId, targetNote);</span>
     }
 
     private PostLikes getPostLikes(String userId, Optional&lt;Post&gt; targetNote) {
-<span class="nc" id="L117">        List&lt;String&gt; likedUsers = targetNote.get().getLikedUsers();</span>
-<span class="nc" id="L118">        boolean whetherLikes = likedUsers.contains(userId);</span>
-<span class="nc" id="L119">        int likeNum = likedUsers.size();</span>
-<span class="nc" id="L120">        return new PostLikes(likeNum, whetherLikes);</span>
+<span class="nc" id="L138">        List&lt;String&gt; likedUsers = targetNote.get().getLikedUsers();</span>
+<span class="nc" id="L139">        boolean whetherLikes = likedUsers.contains(userId);</span>
+<span class="nc" id="L140">        int likeNum = likedUsers.size();</span>
+<span class="nc" id="L141">        return new PostLikes(likeNum, whetherLikes);</span>
     }
 
     public PostLikes whetherUserLikesPost(String userId, String noteId) {
-<span class="nc" id="L124">        Optional&lt;Post&gt; targetNote = postRepository.findById(noteId);</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (targetNote.isEmpty()) {</span>
-<span class="nc" id="L126">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The travel note is not found!&quot;);</span>
+<span class="nc" id="L145">        Optional&lt;Post&gt; targetNote = postRepository.findById(noteId);</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (targetNote.isEmpty()) {</span>
+<span class="nc" id="L147">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The travel note is not found!&quot;);</span>
         }
-<span class="nc" id="L128">        return getPostLikes(userId, targetNote);</span>
+<span class="nc" id="L149">        return getPostLikes(userId, targetNote);</span>
     }
 
 
     public List&lt;Post&gt; findPostOfFollowees(List&lt;String&gt; followingUserId) {
-<span class="nc" id="L133">        Optional&lt;List&lt;Post&gt;&gt; sortedList = Optional.ofNullable(postRepository.findByUserIdListInOrderByCreatedDateAsc(followingUserId, Sort.by(Sort.Direction.DESC, &quot;createdTime&quot;)));</span>
-<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (sortedList.isEmpty()) {</span>
-<span class="nc" id="L135">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;User haven't follow anyone!&quot;);</span>
+<span class="nc" id="L154">        Optional&lt;List&lt;Post&gt;&gt; sortedList = Optional.ofNullable(postRepository.findByUserIdListInOrderByCreatedDateAsc(followingUserId, Sort.by(Sort.Direction.DESC, &quot;createdTime&quot;)));</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (sortedList.isEmpty()) {</span>
+<span class="nc" id="L156">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;User haven't follow anyone!&quot;);</span>
         }
-<span class="nc" id="L137">        return sortedList.get();</span>
+<span class="nc" id="L158">        return sortedList.get();</span>
 
     }
 
     public List&lt;PostDTO&gt; addUsernameImagePathtothePostlist(List&lt;Post&gt; postList){
-<span class="nc" id="L142">        List&lt;PostDTO&gt; postDTOS = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">        for (Post post : postList){</span>
-<span class="nc" id="L144">            postDTOS.add(new PostDTO(post));</span>
-<span class="nc" id="L145">        }</span>
-<span class="nc" id="L146">        List&lt;String&gt; authorIdList = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L147">        List&lt;String&gt; authorNameList = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L148">        List&lt;String&gt; ImagePathList = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L149" title="All 2 branches missed.">        for (PostDTO postDTO : postDTOS){</span>
-<span class="nc" id="L150">            String authorId = postDTO.getPost().getAuthorId();</span>
-<span class="nc bnc" id="L151" title="All 2 branches missed.">            if(!authorIdList.contains(authorId)){</span>
-<span class="nc" id="L152">                authorIdList.add(authorId);</span>
-<span class="nc" id="L153">                User user = restTemplate.getForObject(UserServerLocation + &quot;/users/&quot; + authorId, User.class);</span>
-<span class="nc" id="L154">                authorNameList.add(user.getUsername());</span>
-<span class="nc" id="L155">                ImagePathList.add(user.getImageLink());</span>
+<span class="nc" id="L163">        List&lt;PostDTO&gt; postDTOS = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        for (Post post : postList){</span>
+<span class="nc" id="L165">            postDTOS.add(new PostDTO(post));</span>
+<span class="nc" id="L166">        }</span>
+<span class="nc" id="L167">        List&lt;String&gt; authorIdList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L168">        List&lt;String&gt; authorNameList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L169">        List&lt;String&gt; ImagePathList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        for (PostDTO postDTO : postDTOS){</span>
+<span class="nc" id="L171">            String authorId = postDTO.getPost().getAuthorId();</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">            if(!authorIdList.contains(authorId)){</span>
+<span class="nc" id="L173">                authorIdList.add(authorId);</span>
+<span class="nc" id="L174">                User user = restTemplate.getForObject(UserServerLocation + &quot;/users/&quot; + authorId, User.class);</span>
+<span class="nc" id="L175">                authorNameList.add(user.getUsername());</span>
+<span class="nc" id="L176">                ImagePathList.add(user.getImageLink());</span>
             }
-<span class="nc" id="L157">            postDTO.setAuthorName(authorNameList.get(authorIdList.indexOf(authorId)));</span>
-<span class="nc" id="L158">            postDTO.setImagePath(ImagePathList.get(authorIdList.indexOf(authorId)));</span>
-<span class="nc" id="L159">        }</span>
-<span class="nc" id="L160">        return postDTOS;</span>
+<span class="nc" id="L178">            postDTO.setAuthorName(authorNameList.get(authorIdList.indexOf(authorId)));</span>
+<span class="nc" id="L179">            postDTO.setImagePath(ImagePathList.get(authorIdList.indexOf(authorId)));</span>
+<span class="nc" id="L180">        }</span>
+<span class="nc" id="L181">        return postDTOS;</span>
     }
 
 }

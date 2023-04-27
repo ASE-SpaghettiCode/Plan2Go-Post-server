@@ -97,7 +97,7 @@ public class PostController {
     @GetMapping("/posts/following/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public List<PostDTO> findFollowingNotes(@PathVariable String userId) {
-        // get all the authorId that a user is following
+        // get all the users that a user is following
         ParameterizedTypeReference<List<User>> responseType = new ParameterizedTypeReference<List<User>>() {};
         ResponseEntity<List<User>> response = restTemplate.exchange(UserServerLocation + "/users/" + userId + "/followings", HttpMethod.GET, null, responseType);
         List<User> followingUsers = response.getBody();

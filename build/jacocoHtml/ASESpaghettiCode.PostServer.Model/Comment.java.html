@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Comment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">ASESpaghettiCode.PostServer.Model</a> &gt; <span class="el_source">Comment.java</span></div><h1>Comment.java</h1><pre class="source lang-java linenums">package ASESpaghettiCode.PostServer.Model;
+
+import org.springframework.data.annotation.Id;
+
+import java.time.LocalDateTime;
+
+public class Comment {
+    @Id
+    private String commentId;
+
+    private String commentAuthorId;
+
+    private String commentAuthorName;
+
+    private String commentAuthorImage;
+
+    private LocalDateTime createdTime;
+
+    private String targetPostId;
+
+    private String commentText;
+
+<span class="nc" id="L23">    public Comment(String commentAuthorId, String commentAuthorName, String commentAuthorImage, String targetPostId, String commentText) {</span>
+<span class="nc" id="L24">        this.commentAuthorId = commentAuthorId;</span>
+<span class="nc" id="L25">        this.commentAuthorName = commentAuthorName;</span>
+<span class="nc" id="L26">        this.commentAuthorImage = commentAuthorImage;</span>
+<span class="nc" id="L27">        this.createdTime = LocalDateTime.now();</span>
+<span class="nc" id="L28">        this.targetPostId = targetPostId;</span>
+<span class="nc" id="L29">        this.commentText = commentText;</span>
+<span class="nc" id="L30">    }</span>
+
+    public String getCommentId() {
+<span class="nc" id="L33">        return commentId;</span>
+    }
+
+    public void setCommentId(String commentId) {
+<span class="nc" id="L37">        this.commentId = commentId;</span>
+<span class="nc" id="L38">    }</span>
+
+    public String getCommentAuthorId() {
+<span class="nc" id="L41">        return commentAuthorId;</span>
+    }
+
+    public void setCommentAuthorId(String commentAuthorId) {
+<span class="nc" id="L45">        this.commentAuthorId = commentAuthorId;</span>
+<span class="nc" id="L46">    }</span>
+
+    public String getCommentAuthorName() {
+<span class="nc" id="L49">        return commentAuthorName;</span>
+    }
+
+    public void setCommentAuthorName(String commentAuthorName) {
+<span class="nc" id="L53">        this.commentAuthorName = commentAuthorName;</span>
+<span class="nc" id="L54">    }</span>
+
+    public String getCommentAuthorImage() {
+<span class="nc" id="L57">        return commentAuthorImage;</span>
+    }
+
+    public void setCommentAuthorImage(String commentAuthorImage) {
+<span class="nc" id="L61">        this.commentAuthorImage = commentAuthorImage;</span>
+<span class="nc" id="L62">    }</span>
+
+    public LocalDateTime getCreatedTime() {
+<span class="nc" id="L65">        return createdTime;</span>
+    }
+
+    public void setCreatedTime(LocalDateTime createdTime) {
+<span class="nc" id="L69">        this.createdTime = createdTime;</span>
+<span class="nc" id="L70">    }</span>
+
+    public String getTargetPostId() {
+<span class="nc" id="L73">        return targetPostId;</span>
+    }
+
+    public void setTargetPostId(String targetNoteId) {
+<span class="nc" id="L77">        this.targetPostId = targetNoteId;</span>
+<span class="nc" id="L78">    }</span>
+
+    public String getCommentText() {
+<span class="nc" id="L81">        return commentText;</span>
+    }
+
+    public void setCommentText(String commentText) {
+<span class="nc" id="L85">        this.commentText = commentText;</span>
+<span class="nc" id="L86">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

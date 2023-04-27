@@ -1,10 +1,7 @@
 package ASESpaghettiCode.PostServer.Service;
 
 import ASESpaghettiCode.PostServer.Controller.RestTemplateErrorHandler;
-import ASESpaghettiCode.PostServer.Model.Comment;
-import ASESpaghettiCode.PostServer.Model.CommentPostDTO;
-import ASESpaghettiCode.PostServer.Model.Post;
-import ASESpaghettiCode.PostServer.Model.User;
+import ASESpaghettiCode.PostServer.Model.*;
 import ASESpaghettiCode.PostServer.Repository.CommentRepository;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,14 +47,32 @@ public class CommentService {
         String authorId = commentPostDTO.getCommentAuthorId();
         User user = restTemplate.getForObject(UserServerLocation + "/users/" + authorId, User.class);
         Comment newComment = new Comment(authorId,user.getUsername(), user.getImageLink(),targetPostId, commentPostDTO.getCommentText());
-        Optional<Post> targetNote =  postRepository.findById(targetPostId);
-        if (targetNote.isEmpty()) {
+        Optional<Post> targetPost =  postRepository.findById(targetPostId);
+        if (targetPost.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The post is not found!");
         }
+        // send notification to owner
+        String ownerId = targetPost.get().getAuthorId();
+        String commentText = commentPostDTO.getCommentText();
+        int maxLength = 25;
+        String context = (commentText.length()>maxLength) ? commentText.substring(0, maxLength-3)+"..." : commentText;
+        restTemplate.postForLocation(UserServerLocation+"/notifications",createCommentsNotification(authorId, targetPostId, ownerId, context));
+        //save
         commentRepository.save(newComment);
-        targetNote.get().addComments(newComment);
-        postRepository.save(targetNote.get());
+        targetPost.get().addComments(newComment);
+        postRepository.save(targetPost.get());
         return commentRepository.save(newComment);
+    }
+
+    public Notification createCommentsNotification(String userId, String postId, String ownerId, String context){
+        Notification notification = new Notification();
+        notification.setActorId(userId);
+        notification.setMethod("comment");
+        notification.setOwnerId(ownerId);
+        notification.setTargetType("post");
+        notification.setTargetId(postId);
+        notification.setContext(context);
+        return notification;
     }
 
     public void deleteComment(String commentId, String userId) {

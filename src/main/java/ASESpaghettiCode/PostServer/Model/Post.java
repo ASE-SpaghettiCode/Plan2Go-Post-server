@@ -22,6 +22,10 @@ public class Post {
 
     private List<Comment> comments;
 
+    private String sharedNoteId;
+
+    private String sharedNoteCoverImage;
+
     public Post(String authorId, String content) {
         this.authorId = authorId;
         this.content = content;
@@ -92,4 +96,21 @@ public class Post {
     public void deleteComments(Comment comment) {
         this.comments.remove(comment);
     }
+
+    public String getSharedNoteCoverImage() {
+        return sharedNoteCoverImage;
+    }
+
+    public void setSharedNoteCoverImage(String sharedNoteCoverImage) {
+        this.sharedNoteCoverImage = sharedNoteCoverImage;
+    }
+
+    public String getSharedNoteId() {
+        return sharedNoteId;
+    }
+
+    public void setSharedNoteId(String sharedNoteId) {
+        this.sharedNoteId = sharedNoteId;
+    }
+
 }
