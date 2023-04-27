@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -40,7 +41,12 @@ public class CommentService {
         if (targetPost.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post is not found!");
         }
-        return targetPost.get().getComments();
+        List<String> commentIdList = targetPost.get().getComments();
+        return commentIdList.stream()
+                .map(commentRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 
     public Comment createComment(String targetPostId, CommentPostDTO commentPostDTO) {
@@ -59,7 +65,7 @@ public class CommentService {
         restTemplate.postForLocation(UserServerLocation+"/notifications",createCommentsNotification(authorId, targetPostId, ownerId, context));
         //save
         commentRepository.save(newComment);
-        targetPost.get().addComments(newComment);
+        targetPost.get().addComments(newComment.getCommentId());
         postRepository.save(targetPost.get());
         return commentRepository.save(newComment);
     }
@@ -84,9 +90,9 @@ public class CommentService {
         } else {
             Optional<Post> targetPost = postRepository.findById(targetComment.get().getTargetPostId());
             if (targetPost.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Note is not found!");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post is not found!");
             } else {
-                targetPost.get().deleteComments(targetComment.get());
+                targetPost.get().deleteComments(targetComment.get().getCommentId());
                 postRepository.save(targetPost.get());
             }
             commentRepository.delete(targetComment.get());

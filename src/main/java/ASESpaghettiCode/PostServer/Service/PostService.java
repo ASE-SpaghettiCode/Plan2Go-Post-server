@@ -44,11 +44,12 @@ public class PostService {
     }
 
     public Post createPost(Post newPost) {
-        List<Comment> initialComments = new ArrayList<>();
+        List<String> initialComments = new ArrayList<>();
         newPost.setComments(initialComments);
         if (newPost.getSharedNoteId()!=null){
             Note note = restTemplate.getForObject(TravelNoteServerLocation + "/notes/" + newPost.getSharedNoteId(), Note.class);
             newPost.setSharedNoteCoverImage(note.getCoverImage());
+            newPost.setSharedNoteTitle(note.getNoteTitle());
         }
         return postRepository.save(newPost);
     }
@@ -95,10 +96,11 @@ public class PostService {
     }
 
 
+
     public PostLikes userLikesPost(String userId, String postId) {
         Optional<Post> targetPost = postRepository.findById(postId);
         if (targetPost.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The travel note is not found!");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The post is not found!");
         }
         if(!targetPost.get().getLikedUsers().contains(userId)) {
             targetPost.get().addLikedUsers(userId);
@@ -120,20 +122,20 @@ public class PostService {
     }
 
     public PostLikes userUnlikesPost(String userId, String noteId) {
-        Optional<Post> targetNote = postRepository.findById(noteId);
-        if (targetNote.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The travel note is not found!");
+        Optional<Post> targetPost = postRepository.findById(noteId);
+        if (targetPost.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The post is not found!");
         }
-        if (!targetNote.get().getLikedUsers().contains(userId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user didn't like this travel note");
+        if (!targetPost.get().getLikedUsers().contains(userId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user didn't like this post");
         }
-        targetNote.get().removeLikedUsers(userId);
-        postRepository.save(targetNote.get());
-        return getPostLikes(userId, targetNote);
+        targetPost.get().removeLikedUsers(userId);
+        postRepository.save(targetPost.get());
+        return getPostLikes(userId, targetPost);
     }
 
-    private PostLikes getPostLikes(String userId, Optional<Post> targetNote) {
-        List<String> likedUsers = targetNote.get().getLikedUsers();
+    private PostLikes getPostLikes(String userId, Optional<Post> targetPost) {
+        List<String> likedUsers = targetPost.get().getLikedUsers();
         boolean whetherLikes = likedUsers.contains(userId);
         int likeNum = likedUsers.size();
         return new PostLikes(likeNum, whetherLikes);

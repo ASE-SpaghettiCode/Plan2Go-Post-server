@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - PostControllerTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>PostControllerTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/ASESpaghettiCode.PostServer.Controller.html">ASESpaghettiCode.PostServer.Controller</a> &gt; PostControllerTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">10</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.152s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">createNoteTest()</td>
+<td class="success">0.031s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">deleteNoteTest()</td>
+<td class="success">0.010s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">findAllPostTest()</td>
+<td class="success">0.011s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">findFollowingNotesTest()</td>
+<td class="success">0.025s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getPostByIdTest()</td>
+<td class="success">0.020s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getPostByUserIdTest()</td>
+<td class="success">0.009s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateNote()</td>
+<td class="success">0.014s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">userLikesNoteTest()</td>
+<td class="success">0.014s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">userUnlikesNoteTest()</td>
+<td class="success">0.010s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">whetherUserLikesPostTest()</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2023-04-27 16:45:46.244  INFO 13088 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [ASESpaghettiCode.PostServer.Controller.PostControllerTest], using SpringBootContextLoader
+2023-04-27 16:45:46.246  INFO 13088 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [ASESpaghettiCode.PostServer.Controller.PostControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2023-04-27 16:45:46.246  INFO 13088 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ASESpaghettiCode.PostServer.Controller.PostControllerTest]: PostControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2023-04-27 16:45:46.252  INFO 13088 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ASESpaghettiCode.PostServer.PostServerApplication for test class ASESpaghettiCode.PostServer.Controller.PostControllerTest
+2023-04-27 16:45:46.254  INFO 13088 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2023-04-27 16:45:46.255  INFO 13088 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@49dce561, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@c534814, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@4e38b4ea, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@eb8d539, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@20e1ce62, org.springframework.test.context.support.DirtiesContextTestExecutionListener@36642182, org.springframework.test.context.transaction.TransactionalTestExecutionListener@3df05c40, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@752957da, org.springframework.test.context.event.EventPublishingTestExecutionListener@5b1505c3, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@4c6a5712, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@73c71083, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@4cef1ea6, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@3f2731e5, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@21eb33d4, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@6a636c62]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.9)
+
+2023-04-27 16:45:46.291  INFO 13088 --- [    Test worker] A.P.Controller.PostControllerTest        : Starting PostControllerTest using Java 15.0.2 on DESKTOP-DP4LJM3 with PID 13088 (started by Guan in F:\ASE\Plan2Go-post-server)
+2023-04-27 16:45:46.292  INFO 13088 --- [    Test worker] A.P.Controller.PostControllerTest        : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2023-04-27 16:45:47.107  INFO 13088 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2023-04-27 16:45:47.107  INFO 13088 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2023-04-27 16:45:47.108  INFO 13088 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2023-04-27 16:45:47.123  INFO 13088 --- [    Test worker] A.P.Controller.PostControllerTest        : Started PostControllerTest in 0.863 seconds (JVM running for 7.44)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 7.6.1</a> at 2023年4月27日 下午4:45:50</p>
+</div>
+</div>
+</body>
+</html>
