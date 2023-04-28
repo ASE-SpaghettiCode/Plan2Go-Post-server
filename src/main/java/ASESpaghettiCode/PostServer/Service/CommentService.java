@@ -51,8 +51,13 @@ public class CommentService {
 
     public Comment createComment(String targetPostId, CommentPostDTO commentPostDTO) {
         String authorId = commentPostDTO.getCommentAuthorId();
-        User user = restTemplate.getForObject(UserServerLocation + "/users/" + authorId, User.class);
-        Comment newComment = new Comment(authorId,user.getUsername(), user.getImageLink(),targetPostId, commentPostDTO.getCommentText());
+        User user = null;
+        try{
+            user = restTemplate.getForObject(UserServerLocation + "/users/" + authorId, User.class);
+        }catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The author of the post is not found!");
+        }
+        // find post
         Optional<Post> targetPost =  postRepository.findById(targetPostId);
         if (targetPost.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The post is not found!");
@@ -64,6 +69,7 @@ public class CommentService {
         String context = (commentText.length()>maxLength) ? commentText.substring(0, maxLength-3)+"..." : commentText;
         restTemplate.postForLocation(UserServerLocation+"/notifications",createCommentsNotification(authorId, targetPostId, ownerId, context));
         //save
+        Comment newComment = new Comment(authorId,user.getUsername(), user.getImageLink(),targetPostId, commentPostDTO.getCommentText());
         commentRepository.save(newComment);
         targetPost.get().addComments(newComment.getCommentId());
         postRepository.save(targetPost.get());
