@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,88 +23,99 @@ public class CommentService {
     @Value(&quot;${UserServerLocation}&quot;)
     private String UserServerLocation;
 
-<span class="fc" id="L25">    @Autowired</span>
+<span class="fc" id="L26">    @Autowired</span>
     private RestTemplate restTemplate = new RestTemplateBuilder()
-<span class="fc" id="L27">            .errorHandler(new RestTemplateErrorHandler())</span>
-<span class="fc" id="L28">            .build();</span>
+<span class="fc" id="L28">            .errorHandler(new RestTemplateErrorHandler())</span>
+<span class="fc" id="L29">            .build();</span>
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
     @Autowired
-<span class="fc" id="L33">    public CommentService(@Qualifier(&quot;commentRepository&quot;)CommentRepository commentRepository, @Qualifier(&quot;postRepository&quot;)PostRepository postRepository) {</span>
-<span class="fc" id="L34">        this.commentRepository = commentRepository;</span>
-<span class="fc" id="L35">        this.postRepository = postRepository;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L34">    public CommentService(@Qualifier(&quot;commentRepository&quot;)CommentRepository commentRepository, @Qualifier(&quot;postRepository&quot;)PostRepository postRepository) {</span>
+<span class="fc" id="L35">        this.commentRepository = commentRepository;</span>
+<span class="fc" id="L36">        this.postRepository = postRepository;</span>
+<span class="fc" id="L37">    }</span>
 
     public List&lt;Comment&gt; findCommentsByPostId(String postId) {
-<span class="nc" id="L39">        Optional&lt;Post&gt; targetPost = postRepository.findById(postId);</span>
-<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
-<span class="nc" id="L41">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Post is not found!&quot;);</span>
+<span class="fc" id="L40">        Optional&lt;Post&gt; targetPost = postRepository.findById(postId);</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (targetPost.isEmpty()) {</span>
+<span class="fc" id="L42">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Post is not found!&quot;);</span>
         }
-<span class="nc" id="L43">        return targetPost.get().getComments();</span>
+<span class="fc" id="L44">        List&lt;String&gt; commentIdList = targetPost.get().getComments();</span>
+<span class="fc" id="L45">        return commentIdList.stream()</span>
+<span class="fc" id="L46">                .map(commentRepository::findById)</span>
+<span class="fc" id="L47">                .filter(Optional::isPresent)</span>
+<span class="fc" id="L48">                .map(Optional::get)</span>
+<span class="fc" id="L49">                .collect(Collectors.toList());</span>
     }
 
     public Comment createComment(String targetPostId, CommentPostDTO commentPostDTO) {
-<span class="nc" id="L47">        String authorId = commentPostDTO.getCommentAuthorId();</span>
-<span class="nc" id="L48">        User user = restTemplate.getForObject(UserServerLocation + &quot;/users/&quot; + authorId, User.class);</span>
-<span class="nc" id="L49">        Comment newComment = new Comment(authorId,user.getUsername(), user.getImageLink(),targetPostId, commentPostDTO.getCommentText());</span>
-<span class="nc" id="L50">        Optional&lt;Post&gt; targetPost =  postRepository.findById(targetPostId);</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
-<span class="nc" id="L52">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The post is not found!&quot;);</span>
+<span class="nc" id="L53">        String authorId = commentPostDTO.getCommentAuthorId();</span>
+<span class="nc" id="L54">        User user = null;</span>
+        try{
+<span class="nc" id="L56">            user = restTemplate.getForObject(UserServerLocation + &quot;/users/&quot; + authorId, User.class);</span>
+<span class="nc" id="L57">        }catch (Exception e) {</span>
+<span class="nc" id="L58">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The author of the post is not found!&quot;);</span>
+<span class="nc" id="L59">        }</span>
+        // find post
+<span class="nc" id="L61">        Optional&lt;Post&gt; targetPost =  postRepository.findById(targetPostId);</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (targetPost.isEmpty()) {</span>
+<span class="nc" id="L63">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;The post is not found!&quot;);</span>
         }
         // send notification to owner
-<span class="nc" id="L55">        String ownerId = targetPost.get().getAuthorId();</span>
-<span class="nc" id="L56">        String commentText = commentPostDTO.getCommentText();</span>
-<span class="nc" id="L57">        int maxLength = 25;</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">        String context = (commentText.length()&gt;maxLength) ? commentText.substring(0, maxLength-3)+&quot;...&quot; : commentText;</span>
-<span class="nc" id="L59">        restTemplate.postForLocation(UserServerLocation+&quot;/notifications&quot;,createCommentsNotification(authorId, targetPostId, ownerId, context));</span>
+<span class="nc" id="L66">        String ownerId = targetPost.get().getAuthorId();</span>
+<span class="nc" id="L67">        String commentText = commentPostDTO.getCommentText();</span>
+<span class="nc" id="L68">        int maxLength = 25;</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        String context = (commentText.length()&gt;maxLength) ? commentText.substring(0, maxLength-3)+&quot;...&quot; : commentText;</span>
+<span class="nc" id="L70">        restTemplate.postForLocation(UserServerLocation+&quot;/notifications&quot;,createCommentsNotification(authorId, targetPostId, ownerId, context));</span>
         //save
-<span class="nc" id="L61">        commentRepository.save(newComment);</span>
-<span class="nc" id="L62">        targetPost.get().addComments(newComment);</span>
-<span class="nc" id="L63">        postRepository.save(targetPost.get());</span>
-<span class="nc" id="L64">        return commentRepository.save(newComment);</span>
+<span class="nc" id="L72">        Comment newComment = new Comment(authorId,user.getUsername(), user.getImageLink(),targetPostId, commentPostDTO.getCommentText());</span>
+<span class="nc" id="L73">        commentRepository.save(newComment);</span>
+<span class="nc" id="L74">        targetPost.get().addComments(newComment.getCommentId());</span>
+<span class="nc" id="L75">        postRepository.save(targetPost.get());</span>
+<span class="nc" id="L76">        return commentRepository.save(newComment);</span>
     }
 
     public Notification createCommentsNotification(String userId, String postId, String ownerId, String context){
-<span class="nc" id="L68">        Notification notification = new Notification();</span>
-<span class="nc" id="L69">        notification.setActorId(userId);</span>
-<span class="nc" id="L70">        notification.setMethod(&quot;comment&quot;);</span>
-<span class="nc" id="L71">        notification.setOwnerId(ownerId);</span>
-<span class="nc" id="L72">        notification.setTargetType(&quot;post&quot;);</span>
-<span class="nc" id="L73">        notification.setTargetId(postId);</span>
-<span class="nc" id="L74">        notification.setContext(context);</span>
-<span class="nc" id="L75">        return notification;</span>
+<span class="nc" id="L80">        Notification notification = new Notification();</span>
+<span class="nc" id="L81">        notification.setActorId(userId);</span>
+<span class="nc" id="L82">        notification.setMethod(&quot;comment&quot;);</span>
+<span class="nc" id="L83">        notification.setOwnerId(ownerId);</span>
+<span class="nc" id="L84">        notification.setTargetType(&quot;post&quot;);</span>
+<span class="nc" id="L85">        notification.setTargetId(postId);</span>
+<span class="nc" id="L86">        notification.setContext(context);</span>
+<span class="nc" id="L87">        return notification;</span>
     }
 
     public void deleteComment(String commentId, String userId) {
-<span class="nc" id="L79">        Optional&lt;Comment&gt; targetComment = commentRepository.findById(commentId);</span>
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (targetComment.isEmpty()) {</span>
-<span class="nc" id="L81">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Comment is not found!&quot;);</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        } else if (!Objects.equals(userId, targetComment.get().getCommentAuthorId())) {</span>
-<span class="nc" id="L83">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;unauthorized delete!&quot;);</span>
+<span class="fc" id="L91">        Optional&lt;Comment&gt; targetComment = commentRepository.findById(commentId);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (targetComment.isEmpty()) {</span>
+<span class="fc" id="L93">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Comment is not found!&quot;);</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        } else if (!Objects.equals(userId, targetComment.get().getCommentAuthorId())) {</span>
+<span class="fc" id="L95">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;unauthorized delete!&quot;);</span>
         } else {
-<span class="nc" id="L85">            Optional&lt;Post&gt; targetPost = postRepository.findById(targetComment.get().getTargetPostId());</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">            if (targetPost.isEmpty()) {</span>
-<span class="nc" id="L87">                throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Note is not found!&quot;);</span>
+<span class="fc" id="L97">            Optional&lt;Post&gt; targetPost = postRepository.findById(targetComment.get().getTargetPostId());</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">            if (targetPost.isEmpty()) {</span>
+<span class="fc" id="L99">                throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Post is not found!&quot;);</span>
             } else {
-<span class="nc" id="L89">                targetPost.get().deleteComments(targetComment.get());</span>
-<span class="nc" id="L90">                postRepository.save(targetPost.get());</span>
+<span class="fc" id="L101">                targetPost.get().deleteComments(targetComment.get().getCommentId());</span>
+<span class="fc" id="L102">                postRepository.save(targetPost.get());</span>
             }
-<span class="nc" id="L92">            commentRepository.delete(targetComment.get());</span>
+<span class="fc" id="L104">            commentRepository.delete(targetComment.get());</span>
         }
-<span class="nc" id="L94">    }</span>
+<span class="fc" id="L106">    }</span>
 
     public void updateComment(String userId, String commentId, CommentPostDTO commentPostDTO) {
-<span class="nc" id="L97">        Optional&lt;Comment&gt; targetComment = commentRepository.findById(commentId);</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (targetComment.isEmpty()) {</span>
-<span class="nc" id="L99">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Comment is not found!&quot;);</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        } else if (!Objects.equals(userId, targetComment.get().getCommentAuthorId())){</span>
-<span class="nc" id="L101">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;Unauthorized edit!&quot;);</span>
+<span class="fc" id="L109">        Optional&lt;Comment&gt; targetComment = commentRepository.findById(commentId);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (targetComment.isEmpty()) {</span>
+<span class="fc" id="L111">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Comment is not found!&quot;);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        } else if (!Objects.equals(userId, targetComment.get().getCommentAuthorId())){</span>
+<span class="fc" id="L113">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;Unauthorized edit!&quot;);</span>
         }
         else {
-<span class="nc" id="L104">            targetComment.get().setCommentText(commentPostDTO.getCommentText());</span>
-<span class="nc" id="L105">            commentRepository.save(targetComment.get());</span>
+<span class="fc" id="L116">            targetComment.get().setCommentText(commentPostDTO.getCommentText());</span>
+<span class="fc" id="L117">            commentRepository.save(targetComment.get());</span>
         }
-<span class="nc" id="L107">    }</span>
+<span class="fc" id="L119">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

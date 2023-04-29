@@ -25,8 +25,9 @@ public class CommentServiceTest {
 
     @Test
     void findCommentsByPostIdTest_Success() {
-        post.setComments(List.of(comment.getCommentId()));
+        post.setComments(List.of(comment.getCommentText()));
         when(postRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(post));
+        when(commentRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(comment));
 
         assertEquals(List.of(comment), commentService.findCommentsByPostId("1"));
     }

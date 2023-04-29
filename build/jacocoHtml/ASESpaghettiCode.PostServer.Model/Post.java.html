@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-<span class="nc bnc" id="L10" title="All 70 branches missed.">@Data</span>
+<span class="pc bpc" id="L10" title="77 of 78 branches missed.">@Data</span>
 public class Post {
     @Id
     private String postId;
@@ -20,98 +20,108 @@ public class Post {
 
     private LocalDateTime createdTime;
 
-    private List&lt;Comment&gt; comments;
+    private List&lt;String&gt; comments;
 
     private String sharedNoteId;
 
     private String sharedNoteCoverImage;
 
-<span class="nc" id="L29">    public Post(String authorId, String content) {</span>
-<span class="nc" id="L30">        this.authorId = authorId;</span>
-<span class="nc" id="L31">        this.content = content;</span>
-<span class="nc" id="L32">        this.likedUsers = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L33">        this.createdTime = LocalDateTime.now();</span>
-<span class="nc" id="L34">    }</span>
+    private String sharedNoteTitle;
+
+<span class="fc" id="L31">    public Post(String authorId, String content) {</span>
+<span class="fc" id="L32">        this.authorId = authorId;</span>
+<span class="fc" id="L33">        this.content = content;</span>
+<span class="fc" id="L34">        this.likedUsers = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L35">        this.createdTime = LocalDateTime.now();</span>
+<span class="fc" id="L36">    }</span>
 
     public String getPostId() {
-<span class="nc" id="L37">        return postId;</span>
+<span class="fc" id="L39">        return postId;</span>
     }
 
     public void setPostId(String postId) {
-<span class="nc" id="L41">        this.postId = postId;</span>
-<span class="nc" id="L42">    }</span>
+<span class="fc" id="L43">        this.postId = postId;</span>
+<span class="fc" id="L44">    }</span>
 
     public String getAuthorId() {
-<span class="nc" id="L45">        return authorId;</span>
+<span class="fc" id="L47">        return authorId;</span>
     }
 
     public void setAuthorId(String authorId) {
-<span class="nc" id="L49">        this.authorId = authorId;</span>
-<span class="nc" id="L50">    }</span>
+<span class="nc" id="L51">        this.authorId = authorId;</span>
+<span class="nc" id="L52">    }</span>
 
     public String getContent() {
-<span class="nc" id="L53">        return content;</span>
+<span class="fc" id="L55">        return content;</span>
     }
 
     public void setContent(String content) {
-<span class="nc" id="L57">        this.content = content;</span>
-<span class="nc" id="L58">    }</span>
+<span class="fc" id="L59">        this.content = content;</span>
+<span class="fc" id="L60">    }</span>
 
     public List&lt;String&gt; getLikedUsers() {
-<span class="nc" id="L61">        return likedUsers;</span>
+<span class="fc" id="L63">        return likedUsers;</span>
     }
 
     public void setLikedUsers(List&lt;String&gt; likedUsers) {
-<span class="nc" id="L65">        this.likedUsers = likedUsers;</span>
-<span class="nc" id="L66">    }</span>
+<span class="fc" id="L67">        this.likedUsers = likedUsers;</span>
+<span class="fc" id="L68">    }</span>
 
     public void addLikedUsers(String userId) {
-<span class="nc" id="L69">        this.likedUsers.add(userId);</span>
-<span class="nc" id="L70">    }</span>
+<span class="nc" id="L71">        this.likedUsers.add(userId);</span>
+<span class="nc" id="L72">    }</span>
 
     public void removeLikedUsers(String userId) {
-<span class="nc" id="L73">        this.likedUsers.remove(userId);</span>
-<span class="nc" id="L74">    }</span>
+<span class="fc" id="L75">        this.likedUsers.remove(userId);</span>
+<span class="fc" id="L76">    }</span>
 
     public LocalDateTime getCreatedTime() {
-<span class="nc" id="L77">        return createdTime;</span>
+<span class="fc" id="L79">        return createdTime;</span>
     }
 
     public void setCreatedTime(LocalDateTime createdTime) {
-<span class="nc" id="L81">        this.createdTime = createdTime;</span>
-<span class="nc" id="L82">    }</span>
+<span class="fc" id="L83">        this.createdTime = createdTime;</span>
+<span class="fc" id="L84">    }</span>
 
-    public List&lt;Comment&gt; getComments() {
-<span class="nc" id="L85">        return comments;</span>
+    public List&lt;String&gt; getComments() {
+<span class="fc" id="L87">        return comments;</span>
     }
 
-    public void setComments(List&lt;Comment&gt; comments) {
-<span class="nc" id="L89">        this.comments = comments;</span>
-<span class="nc" id="L90">    }</span>
+    public void setComments(List&lt;String&gt; comments) {
+<span class="fc" id="L91">        this.comments = comments;</span>
+<span class="fc" id="L92">    }</span>
 
-    public void addComments(Comment comment) {
-<span class="nc" id="L93">        this.comments.add(comment);</span>
-<span class="nc" id="L94">    }</span>
+    public void addComments(String commentId) {
+<span class="fc" id="L95">        this.comments.add(commentId);</span>
+<span class="fc" id="L96">    }</span>
 
-    public void deleteComments(Comment comment) {
-<span class="nc" id="L97">        this.comments.remove(comment);</span>
-<span class="nc" id="L98">    }</span>
+    public void deleteComments(String commentId) {
+<span class="fc" id="L99">        this.comments.remove(commentId);</span>
+<span class="fc" id="L100">    }</span>
 
     public String getSharedNoteCoverImage() {
-<span class="nc" id="L101">        return sharedNoteCoverImage;</span>
+<span class="fc" id="L103">        return sharedNoteCoverImage;</span>
     }
 
     public void setSharedNoteCoverImage(String sharedNoteCoverImage) {
-<span class="nc" id="L105">        this.sharedNoteCoverImage = sharedNoteCoverImage;</span>
-<span class="nc" id="L106">    }</span>
+<span class="fc" id="L107">        this.sharedNoteCoverImage = sharedNoteCoverImage;</span>
+<span class="fc" id="L108">    }</span>
 
     public String getSharedNoteId() {
-<span class="nc" id="L109">        return sharedNoteId;</span>
+<span class="fc" id="L111">        return sharedNoteId;</span>
     }
 
     public void setSharedNoteId(String sharedNoteId) {
-<span class="nc" id="L113">        this.sharedNoteId = sharedNoteId;</span>
-<span class="nc" id="L114">    }</span>
+<span class="fc" id="L115">        this.sharedNoteId = sharedNoteId;</span>
+<span class="fc" id="L116">    }</span>
+
+    public String getSharedNoteTitle() {
+<span class="fc" id="L119">        return sharedNoteTitle;</span>
+    }
+
+    public void setSharedNoteTitle(String sharedNoteTitle) {
+<span class="fc" id="L123">        this.sharedNoteTitle = sharedNoteTitle;</span>
+<span class="fc" id="L124">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -26,11 +26,11 @@ public class User{
     public List&lt;String&gt; followers;
     public List&lt;String&gt; followings;
 
-<span class="nc" id="L29">    public User(String username, String password, String token){</span>
-<span class="nc" id="L30">        this.password=password;</span>
-<span class="nc" id="L31">        this.username=username;</span>
-<span class="nc" id="L32">        this.token=token;</span>
-<span class="nc" id="L33">    }</span>
+<span class="fc" id="L29">    public User(String username, String password, String token){</span>
+<span class="fc" id="L30">        this.password=password;</span>
+<span class="fc" id="L31">        this.username=username;</span>
+<span class="fc" id="L32">        this.token=token;</span>
+<span class="fc" id="L33">    }</span>
 
     @JsonCreator
     public static User create(@JsonProperty(&quot;userId&quot;) String userId,
@@ -47,7 +47,7 @@ public class User{
     }
 
     public String getUserId() {
-<span class="nc" id="L50">        return userId;</span>
+<span class="fc" id="L50">        return userId;</span>
     }
 
     public String getPassword() {
