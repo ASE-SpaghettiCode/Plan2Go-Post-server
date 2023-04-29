@@ -111,13 +111,13 @@ public class PostService {
         return getPostLikes(userId, targetPost);
     }
 
-    public Notification createLikesNotification(String userId, String noteId,String ownerId){
+    public Notification createLikesNotification(String userId, String postId,String ownerId){
         Notification notification = new Notification();
         notification.setActorId(userId);
         notification.setMethod("like");
         notification.setOwnerId(ownerId);
-        notification.setTargetType("note");
-        notification.setTargetId(noteId);
+        notification.setTargetType("post");
+        notification.setTargetId(postId);
         return notification;
     }
 
