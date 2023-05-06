@@ -5,6 +5,7 @@ on:
     branches:
       - "CICD"
       - "main"
+      - "dev"
       
 jobs:
   docker:
