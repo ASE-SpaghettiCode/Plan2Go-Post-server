@@ -6,6 +6,7 @@ import ASESpaghettiCode.PostServer.Model.Post;
 import ASESpaghettiCode.PostServer.Repository.CommentRepository;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class CommentServiceTest {
     private final CommentService commentService = new CommentService(commentRepository, postRepository);
     Post post = new Post("authorId", "content");
     Comment comment = new Comment("commentAuthorId", "commentAuthorName", "commentAuthorName", "targetPostId", "commentText");
+    CommentPostDTO commentPostDTO = new CommentPostDTO();
 
     @Test
     void findCommentsByPostIdTest_Success() {
@@ -37,6 +39,22 @@ public class CommentServiceTest {
         when(postRepository.findById(any(String.class))).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> commentService.findCommentsByPostId("1"));
+    }
+
+    @Test
+    void createCommentTest() {
+        commentPostDTO.setCommentText("commentText");
+        commentPostDTO.setCommentAuthorId("1");
+        post.setComments(new ArrayList<>());
+        ReflectionTestUtils.setField(commentService, "UserServerLocation", "http://localhost:8081");
+
+        when(postRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(post));
+        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
+        when(postRepository.save(any(Post.class))).thenReturn(post);
+
+        Comment createdComment = commentService.createComment("1", commentPostDTO);
+
+        assertEquals(comment,createdComment);
     }
 
     @Test
