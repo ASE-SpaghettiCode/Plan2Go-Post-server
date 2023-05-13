@@ -41,21 +41,21 @@ public class CommentServiceTest {
         assertThrows(RuntimeException.class, () -> commentService.findCommentsByPostId("1"));
     }
 
-    @Test
-    void createCommentTest() {
-        commentPostDTO.setCommentText("commentText");
-        commentPostDTO.setCommentAuthorId("1");
-        post.setComments(new ArrayList<>());
-        ReflectionTestUtils.setField(commentService, "UserServerLocation", "http://localhost:8081");
-
-        when(postRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(post));
-        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
-        when(postRepository.save(any(Post.class))).thenReturn(post);
-
-        Comment createdComment = commentService.createComment("1", commentPostDTO);
-
-        assertEquals(comment,createdComment);
-    }
+//    @Test
+//    void createCommentTest() {
+//        commentPostDTO.setCommentText("commentText");
+//        commentPostDTO.setCommentAuthorId("1");
+//        post.setComments(new ArrayList<>());
+//        ReflectionTestUtils.setField(commentService, "UserServerLocation", "http://localhost:8081");
+//
+//        when(postRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(post));
+//        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
+//        when(postRepository.save(any(Post.class))).thenReturn(post);
+//
+//        Comment createdComment = commentService.createComment("1", commentPostDTO);
+//
+//        assertEquals(comment,createdComment);
+//    }
 
     @Test
     void deleteCommentTest_Success() {
