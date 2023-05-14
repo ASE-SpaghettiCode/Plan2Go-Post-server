@@ -6,6 +6,7 @@ import ASESpaghettiCode.PostServer.Model.PostLikes;
 import ASESpaghettiCode.PostServer.Repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -118,8 +119,9 @@ public class PostServiceTest {
 
 //    @Test
 //    void userLikesPostTest_Success() {
+//        ReflectionTestUtils.setField(postService, "UserServerLocation", "http://localhost:8081");
+//
 //        when(postRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(post));
-//        when(restTemplate.postForLocation(any(),any(Notification.class))).thenReturn(null);
 //
 //        assertEquals(new PostLikes(1,true),postService.userLikesPost("authorId","1"));
 //        verify(postRepository,times(1)).save(any(Post.class));
@@ -176,5 +178,12 @@ public class PostServiceTest {
         when(postRepository.findByUserIdListInOrderByCreatedDateAsc(any(),any())).thenReturn(null);
 
         assertThrows(ResponseStatusException.class, () -> postService.findPostOfFollowees(List.of("1")));
+    }
+
+    @Test
+    void addUsernameImagePathtothePostlistTest() {
+        ReflectionTestUtils.setField(postService, "UserServerLocation", "http://localhost:8081");
+
+        assertThrows(RuntimeException.class,() -> postService.addUsernameImagePathtothePostlist(List.of(post)));
     }
 }
