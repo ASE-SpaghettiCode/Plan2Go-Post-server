@@ -2,15 +2,13 @@ package ASESpaghettiCode.PostServer.Controller;
 
 
 import ASESpaghettiCode.PostServer.Model.Post;
-import ASESpaghettiCode.PostServer.Model.User;
 import ASESpaghettiCode.PostServer.Model.PostDTO;
 import ASESpaghettiCode.PostServer.Model.PostLikes;
-import ASESpaghettiCode.PostServer.Repository.PostRepository;
+import ASESpaghettiCode.PostServer.Model.User;
 import ASESpaghettiCode.PostServer.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
