@@ -27,7 +27,7 @@ public class PostService {
     @Value("${UserServerLocation}")
     private String UserServerLocation;
 
-    @Value("http://localhost:8082")
+    @Value("${TravelNoteServerLocation}")
     private String TravelNoteServerLocation;
 
     @Autowired
