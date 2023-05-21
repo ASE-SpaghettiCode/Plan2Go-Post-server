@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.214s</div>
+<div class="counter">0.156s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,52 +79,52 @@
 </thead>
 <tr>
 <td class="success">createNoteTest()</td>
-<td class="success">0.038s</td>
+<td class="success">0.027s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">deleteNoteTest()</td>
-<td class="success">0.014s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">findAllPostTest()</td>
-<td class="success">0.019s</td>
+<td class="success">0.010s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">findFollowingNotesTest()</td>
-<td class="success">0.034s</td>
+<td class="success">0.026s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">getPostByIdTest()</td>
-<td class="success">0.029s</td>
+<td class="success">0.021s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">getPostByUserIdTest()</td>
-<td class="success">0.014s</td>
+<td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">updateNote()</td>
-<td class="success">0.018s</td>
+<td class="success">0.013s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">userLikesNoteTest()</td>
-<td class="success">0.022s</td>
+<td class="success">0.017s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">userUnlikesNoteTest()</td>
-<td class="success">0.012s</td>
+<td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">whetherUserLikesPostTest()</td>
-<td class="success">0.014s</td>
+<td class="success">0.012s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -132,12 +132,12 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2023-04-30 01:43:12.468  INFO 16716 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [ASESpaghettiCode.PostServer.Controller.PostControllerTest], using SpringBootContextLoader
-2023-04-30 01:43:12.470  INFO 16716 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [ASESpaghettiCode.PostServer.Controller.PostControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
-2023-04-30 01:43:12.471  INFO 16716 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ASESpaghettiCode.PostServer.Controller.PostControllerTest]: PostControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2023-04-30 01:43:12.500  INFO 16716 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ASESpaghettiCode.PostServer.PostServerApplication for test class ASESpaghettiCode.PostServer.Controller.PostControllerTest
-2023-04-30 01:43:12.502  INFO 16716 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
-2023-04-30 01:43:12.504  INFO 16716 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@62808e8d, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@5c26ab0a, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@774f2d7f, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@6ddd71cc, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@b4f7e1c, org.springframework.test.context.support.DirtiesContextTestExecutionListener@6258ea84, org.springframework.test.context.transaction.TransactionalTestExecutionListener@6c720765, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@6a275836, org.springframework.test.context.event.EventPublishingTestExecutionListener@1a6864f0, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@3f41a1f3, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@4374c051, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@1342c6e1, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@4a547f9d, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@7828111d, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@1dbb3001]
+<pre>2023-05-21 23:14:13.663  INFO 56099 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [ASESpaghettiCode.PostServer.Controller.PostControllerTest], using SpringBootContextLoader
+2023-05-21 23:14:13.664  INFO 56099 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [ASESpaghettiCode.PostServer.Controller.PostControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2023-05-21 23:14:13.665  INFO 56099 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ASESpaghettiCode.PostServer.Controller.PostControllerTest]: PostControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2023-05-21 23:14:13.673  INFO 56099 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ASESpaghettiCode.PostServer.PostServerApplication for test class ASESpaghettiCode.PostServer.Controller.PostControllerTest
+2023-05-21 23:14:13.675  INFO 56099 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2023-05-21 23:14:13.675  INFO 56099 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@9f52c05, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@7d32d6af, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@2029947d, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@30ad3219, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@1098a50d, org.springframework.test.context.support.DirtiesContextTestExecutionListener@7b749e1f, org.springframework.test.context.transaction.TransactionalTestExecutionListener@17127770, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4e76b271, org.springframework.test.context.event.EventPublishingTestExecutionListener@1b93c67f, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@44482774, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@4065717a, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3b7bb63d, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@3e5e2f13, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@3b28cc2b, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@502d9495]
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -147,12 +147,12 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v2.7.9)
 
-2023-04-30 01:43:12.580  INFO 16716 --- [    Test worker] A.P.Controller.PostControllerTest        : Starting PostControllerTest using Java 15.0.2 on DESKTOP-DP4LJM3 with PID 16716 (started by Guan in F:\ASE\Plan2Go-post-server)
-2023-04-30 01:43:12.581  INFO 16716 --- [    Test worker] A.P.Controller.PostControllerTest        : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2023-04-30 01:43:13.814  INFO 16716 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2023-04-30 01:43:13.814  INFO 16716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2023-04-30 01:43:13.816  INFO 16716 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2023-04-30 01:43:13.839  INFO 16716 --- [    Test worker] A.P.Controller.PostControllerTest        : Started PostControllerTest in 1.326 seconds (JVM running for 12.513)
+2023-05-21 23:14:13.714  INFO 56099 --- [    Test worker] A.P.Controller.PostControllerTest        : Starting PostControllerTest using Java 11.0.18 on MacBook-Pro.local with PID 56099 (started by mac in /Users/mac/IdeaProjects/Plan2Go-post-server)
+2023-05-21 23:14:13.714  INFO 56099 --- [    Test worker] A.P.Controller.PostControllerTest        : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2023-05-21 23:14:14.520  INFO 56099 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2023-05-21 23:14:14.520  INFO 56099 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2023-05-21 23:14:14.521  INFO 56099 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2023-05-21 23:14:14.538  INFO 56099 --- [    Test worker] A.P.Controller.PostControllerTest        : Started PostControllerTest in 0.858 seconds (JVM running for 8.142)
 </pre>
 </span>
 </div>
@@ -164,7 +164,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6.1</a> at 2023年4月30日 上午1:43:19</p>
+<a href="http://www.gradle.org">Gradle 7.6.1</a> at 21 May 2023, 23:14:17</p>
 </div>
 </div>
 </body>
