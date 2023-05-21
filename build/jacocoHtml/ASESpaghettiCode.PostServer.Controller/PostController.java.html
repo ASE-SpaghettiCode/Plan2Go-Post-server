@@ -1,16 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">ASESpaghettiCode.PostServer.Controller</a> &gt; <span class="el_source">PostController.java</span></div><h1>PostController.java</h1><pre class="source lang-java linenums">package ASESpaghettiCode.PostServer.Controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">ASESpaghettiCode.PostServer.Controller</a> &gt; <span class="el_source">PostController.java</span></div><h1>PostController.java</h1><pre class="source lang-java linenums">package ASESpaghettiCode.PostServer.Controller;
 
 
 import ASESpaghettiCode.PostServer.Model.Post;
-import ASESpaghettiCode.PostServer.Model.User;
 import ASESpaghettiCode.PostServer.Model.PostDTO;
 import ASESpaghettiCode.PostServer.Model.PostLikes;
-import ASESpaghettiCode.PostServer.Repository.PostRepository;
+import ASESpaghettiCode.PostServer.Model.User;
 import ASESpaghettiCode.PostServer.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -27,92 +25,92 @@ public class PostController {
 
     private final PostService postService;
 
-<span class="fc" id="L30">    public PostController(PostService postService) {</span>
-<span class="fc" id="L31">        this.postService = postService;</span>
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L28">    public PostController(PostService postService) {</span>
+<span class="fc" id="L29">        this.postService = postService;</span>
+<span class="fc" id="L30">    }</span>
 
     @Value(&quot;${UserServerLocation}&quot;)
     private String UserServerLocation;
 
-<span class="fc" id="L37">    @Autowired</span>
+<span class="fc" id="L35">    @Autowired</span>
     private RestTemplate restTemplate = new RestTemplateBuilder()
-<span class="fc" id="L39">            .errorHandler(new RestTemplateErrorHandler())</span>
-<span class="fc" id="L40">            .build();</span>
+<span class="fc" id="L37">            .errorHandler(new RestTemplateErrorHandler())</span>
+<span class="fc" id="L38">            .build();</span>
 
 
     @GetMapping(&quot;/posts&quot;)
     @ResponseStatus(HttpStatus.OK)
     public List&lt;Post&gt; findAllPost(){
-<span class="fc" id="L46">            return postService.findAllPost();</span>
+<span class="fc" id="L44">            return postService.findAllPost();</span>
     }
 
     @PostMapping(&quot;/posts&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     public Post createNote(@RequestBody Post newPost) {
-<span class="fc" id="L52">        return postService.createPost(newPost);</span>
+<span class="fc" id="L50">        return postService.createPost(newPost);</span>
     }
 
     @GetMapping(&quot;/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public Post getPostById(@PathVariable String postId) {
-<span class="fc" id="L58">        return postService.getPostById(postId);</span>
+<span class="fc" id="L56">        return postService.getPostById(postId);</span>
     }
 
     @GetMapping(&quot;/users/{userId}/posts&quot;)
     @ResponseStatus(HttpStatus.OK)
     public  List&lt;Post&gt; getPostByUserId(@PathVariable String userId) {
-<span class="fc" id="L64">        return postService.findPostByUserId(userId);</span>
+<span class="fc" id="L62">        return postService.findPostByUserId(userId);</span>
     }
 
     @DeleteMapping(&quot;/users/{userId}/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNote(@PathVariable String postId, @PathVariable String userId) {
-<span class="fc" id="L70">        postService.deletePost(postId, userId);</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L68">        postService.deletePost(postId, userId);</span>
+<span class="fc" id="L69">    }</span>
 
     @PutMapping(&quot;users/{userId}/editing/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public void updateNote(@PathVariable String postId, @PathVariable String userId, @RequestBody Post post) {
-<span class="fc" id="L76">        postService.updatePost(postId, userId, post);</span>
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L74">        postService.updatePost(postId, userId, post);</span>
+<span class="fc" id="L75">    }</span>
 
     @PostMapping(&quot;users/{userId}/likes/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public PostLikes userLikesNote(@PathVariable String userId, @PathVariable String postId) {
-<span class="fc" id="L82">        return postService.userLikesPost(userId, postId);</span>
+<span class="fc" id="L80">        return postService.userLikesPost(userId, postId);</span>
     }
 
     @DeleteMapping(&quot;users/{userId}/likes/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public PostLikes userUnlikesNote(@PathVariable String userId, @PathVariable String postId) {
-<span class="fc" id="L88">        return postService.userUnlikesPost(userId, postId);</span>
+<span class="fc" id="L86">        return postService.userUnlikesPost(userId, postId);</span>
     }
 
     @GetMapping(&quot;users/{userId}/whetherLikes/posts/{postId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public PostLikes whetherUserLikesPost(@PathVariable String userId, @PathVariable String postId) {
-<span class="fc" id="L94">        return postService.whetherUserLikesPost(userId,postId);</span>
+<span class="fc" id="L92">        return postService.whetherUserLikesPost(userId,postId);</span>
     }
 
     @GetMapping(&quot;/posts/following/{userId}&quot;)
     @ResponseStatus(HttpStatus.OK)
     public List&lt;PostDTO&gt; findFollowingNotes(@PathVariable String userId) {
         // get all the users that a user is following
-<span class="fc" id="L101">        ParameterizedTypeReference&lt;List&lt;User&gt;&gt; responseType = new ParameterizedTypeReference&lt;List&lt;User&gt;&gt;() {};</span>
-<span class="fc" id="L102">        ResponseEntity&lt;List&lt;User&gt;&gt; response = restTemplate.exchange(UserServerLocation + &quot;/users/&quot; + userId + &quot;/followings&quot;, HttpMethod.GET, null, responseType);</span>
-<span class="fc" id="L103">        List&lt;User&gt; followingUsers = response.getBody();</span>
+<span class="fc" id="L99">        ParameterizedTypeReference&lt;List&lt;User&gt;&gt; responseType = new ParameterizedTypeReference&lt;List&lt;User&gt;&gt;() {};</span>
+<span class="fc" id="L100">        ResponseEntity&lt;List&lt;User&gt;&gt; response = restTemplate.exchange(UserServerLocation + &quot;/users/&quot; + userId + &quot;/followings&quot;, HttpMethod.GET, null, responseType);</span>
+<span class="fc" id="L101">        List&lt;User&gt; followingUsers = response.getBody();</span>
 
         // retrive all authorId(followingUserId) from users
-<span class="fc" id="L106">        List&lt;String&gt; followingUserId = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">        for (User user: followingUsers){</span>
-<span class="fc" id="L108">            String authorId = user.getUserId();</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">            if (!followingUserId.contains(authorId)){</span>
-<span class="fc" id="L110">                followingUserId.add(authorId);</span>
+<span class="fc" id="L104">        List&lt;String&gt; followingUserId = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        for (User user: followingUsers){</span>
+<span class="fc" id="L106">            String authorId = user.getUserId();</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">            if (!followingUserId.contains(authorId)){</span>
+<span class="fc" id="L108">                followingUserId.add(authorId);</span>
             }
-<span class="fc" id="L112">        }</span>
+<span class="fc" id="L110">        }</span>
         // find all posts with the followingUserId
-<span class="fc" id="L114">        List&lt;Post&gt; postList = postService.findPostOfFollowees(followingUserId);</span>
-<span class="fc" id="L115">        return postService.addUsernameImagePathtothePostlist(postList);</span>
+<span class="fc" id="L112">        List&lt;Post&gt; postList = postService.findPostOfFollowees(followingUserId);</span>
+<span class="fc" id="L113">        return postService.addUsernameImagePathtothePostlist(postList);</span>
     }
 
 }
